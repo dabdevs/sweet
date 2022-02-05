@@ -15,9 +15,10 @@ class CreateProfileServiceTable extends Migration
     {
         Schema::create('profile_service', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('profile_id')->nullable();
+            $table->bigInteger('profile_id')->unsigned();
             $table->foreign('profile_id')->references('id')->on('profiles');
-            $table->unsignedBigInteger('service_id')->nullable();
+
+            $table->bigInteger('service_id')->unsigned();
             $table->foreign('service_id')->references('id')->on('services');
             $table->timestamps();
         });

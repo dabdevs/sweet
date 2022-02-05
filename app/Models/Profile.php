@@ -10,7 +10,7 @@ class Profile extends Model
     use HasFactory;
 
     protected $table = 'profiles';
-    protected $fillable = ['user_id', 'country_id', 'city_id', 'location_id', 'telephone', 'whatsapp', 'services'];
+    protected $fillable = ['user_id', 'country_id', 'city_id', 'location_id', 'telephone', 'whatsapp'];
 
     /**
      * The services that belong to the profile
@@ -18,6 +18,6 @@ class Profile extends Model
      */
     public function services()
     {
-        return $this->belongsToMany(Service::class, 'profile_service', 'service_id', 'profile_id')->withTimeStamps();
+        return $this->belongsToMany(Service::class, 'profile_service', 'profile_id', 'service_id')->withTimeStamps();
     }
 }

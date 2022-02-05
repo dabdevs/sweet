@@ -57,18 +57,31 @@
                                     </label>
                                 </div>
                             </div>
+
+                            
+                            <div class="col-sm-12">
+                                
+                            </div>
+
                             <div class="col-md-4">
-                                <label for="service" class="form-label">{{ __('Service') }}</label>
+                                <label for="service" class="form-label">{{ __('Services') }}:</label> 
+                                <p>
+                                    @if($user->profile->services != null)
+                                        @foreach ($user->profile->services as $service)
+                                            <span class="badge bg-primary">{{ $service->name }}</span>
+                                        @endforeach
+                                    @endif
+                                </p>
                                 <select name="services[]" id="services" class="form-control" multiple>
                                     @foreach ($data['services'] as $service)
-                                        <option value="{{ $service->id }}" @if ($service->id == $user->profile->service_id) selected @endif>
-                                            {{ $service->name }}</option>
+                                        <option value="{{ $service->id }}" @if($user->profile->services != null && in_array($service->id, $user->profile->services->toArray())) selected @endif>
+                                            {{ $service->name }} {{ in_array($service->id, $user->profile->services->toArray()) }}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="col-12">
-                                <a href="{{ route('home') }}" class="btn btn-secondary"><i class="fa fa-arrow-left"></i> Volver</a>
-                                <button type="submit" class="btn btn-primary">{{ __('Save') }}</button>
+                                <a href="{{ route('home') }}" class="btn btn-outline-danger"><i class="fa fa-arrow-left"></i> Volver</a>
+                                <button type="submit" class="btn btn-success">{{ __('Save') }}</button>
                             </div>
                             {{ Form::close() }}
                         </form>
