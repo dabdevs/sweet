@@ -146,6 +146,11 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'country_id' => 'País',
+        'city_id' => 'Ciudad',
+        'location_id' => 'Barrio',
+        'telephone' => 'Teléfono'
+    ],
 
 ];

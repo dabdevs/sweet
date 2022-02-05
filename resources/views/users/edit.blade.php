@@ -17,6 +17,7 @@
                             <div class="col-md-4">
                                 <label for="country" class="form-label">{{ __('Country') }}</label>
                                 <select name="country_id" id="country" class="form-control select2" onchange="getCities()">
+                                    <option value="">Selecciona una opción</option>
                                     @foreach ($data['countries'] as $country)
                                         <option value="{{ $country->id }}" @if ($country->id == $user->profile->country_id) selected @endif>{{ $country->name }}
                                         </option>
@@ -24,9 +25,9 @@
                                 </select>
                             </div>
                             <div class="col-md-4">
-                                <label for="city" class="form-label">{{ __('City') }} city_id:
-                                    {{ $user->profile->city_id }}</label>
+                                <label for="city" class="form-label">{{ __('City') }}</label>
                                 <select name="city_id" id="city" class="form-control select2" onchange="getLocations()">
+                                    <option value="">Selecciona una opción</option>
                                     @foreach ($data['cities'] as $city)
                                         <option value="{{ $city->id }}" @if ($city->id == $user->profile->city_id) selected @endif>{{ $city->name }}
                                         </option>
@@ -36,6 +37,7 @@
                             <div class="col-md-4">
                                 <label for="location" class="form-label">{{ __('Location') }}</label>
                                 <select name="location_id" id="location" class="form-control select2">
+                                    <option value="">Selecciona una opción</option>
                                     @foreach ($data['locations'] as $location)
                                         <option value="{{ $location->id }}" @if ($location->id == $user->profile->location_id) selected @endif>
                                             {{ $location->name }}</option>
