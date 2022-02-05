@@ -14,7 +14,17 @@
                             @csrf
                             {{ Form::open() }}
 
-                            <div class="col-md-4">
+                            <div class="col-md-2">
+                                <label for="gender" class="form-label">{{ __('Gender') }} {{ $user->profile->gender }}</label>
+                                <select name="gender" id="gender" class="form-control">
+                                    <option value="Female" @if($user->profile->gender == __('Female')) selected @endif>{{ __('Female') }}</option>
+                                    <option value="Male">{{ __('Male') }}</option>
+                                    <option value="Transgender">{{ __('Transgender') }}</option>
+                                    <option value="Other">{{ __('Other') }}</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-3">
                                 <label for="country" class="form-label">{{ __('Country') }}</label>
                                 <select readonly name="country_id" id="country" class="form-control select2" onchange="getCities()">
                                     @foreach ($data['countries'] as $country)
@@ -23,7 +33,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <label for="city" class="form-label">{{ __('City') }}</label>
                                 <select name="city_id" id="city" class="form-control select2" onchange="getLocations()">
                                     <option value="">Selecciona una opción</option>
@@ -43,35 +53,45 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-6">
-                                <label for="telephone" class="form-label">{{ __('Telephone') }}</label>
-                                <input name="telephone" type="number" class="form-control" id="telephone"
-                                    value="{{ $user->profile->telephone ?? '' }}" min="1">
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-check">
-                                    <input name="whatsapp" class="form-check-input" type="checkbox" id="whatsapp"
-                                        @if ($user->profile != null) {{ $user->profile->whatsapp ? 'checked' : '' }} @endif>
-                                    <label class="form-check-label" for="whatsapp">
-                                        {{ __('I have whatsapp') }}
-                                    </label>
+                            <div class="col-md-7">
+                                <div class="col-md-12">
+                                    <div class="col-md-6">
+                                        <label for="telephone" class="form-label">{{ __('Telephone') }}</label>
+                                        <input name="telephone" type="text" class="form-control" id="telephone"
+                                            value="{{ $user->profile->telephone ?? '' }}" min="1">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-check">
+                                            <input name="whatsapp" class="form-check-input" type="checkbox" id="whatsapp"
+                                                @if ($user->profile != null) {{ $user->profile->whatsapp ? 'checked' : '' }} @endif>
+                                            <label class="form-check-label" for="whatsapp">
+                                                {{ __('I have whatsapp') }}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="for-group col-12 mb-2">
+                                    <label for="instagram" class="form-label">{{ __('Instagram') }}</label>
+                                    <input name="instagram" type="text" class="form-control" id="instagram"
+                                        value="{{ $user->profile->instagram ?? '' }}" placeholder="https://www.instagram.com/{{ __('username') }}">
+                                </div>
+                                <div class="for-group col-12">
+                                    <label for="telegram" class="form-label">{{ __('Telegram') }}</label>
+                                    <input name="telegram" type="text" class="form-control" id="telegram"
+                                        value="{{ $user->profile->telegram ?? '' }}" placeholder="https://t.me/joinchat/ZXLBK9YhbNi0NaNh">
                                 </div>
                             </div>
 
-                            
-                            <div class="col-sm-12">
-                                
-                            </div>
-
-                            <div class="col-md-4">
+                            <div class="col-md-5">
                                 <label for="service" class="form-label">{{ __('Services') }}:</label> 
-                                <p>
-                                    @if($user->profile->services != null)
-                                        @foreach ($user->profile->services as $service)
-                                            <span class="badge bg-primary">{{ $service->name }}</span>
-                                        @endforeach
-                                    @endif
+                                @if($user->profile->services != null)
+                                <p class="m-0">
+                                    @foreach ($user->profile->services as $service)
+                                        <span class="badge bg-primary">{{ $service->name }}</span>
+                                    @endforeach
                                 </p>
+                                @endif
+                                
                                 <select name="services[]" id="services" class="form-control" multiple>
                                     @foreach ($data['services'] as $service)
                                         <option value="{{ $service->id }}" @if($user->profile->services != null && in_array($service->id, $user->profile->services->toArray())) selected @endif>
@@ -79,6 +99,7 @@
                                     @endforeach
                                 </select>
                             </div>
+                            
                             <div class="col-12">
                                 <a href="{{ route('home') }}" class="btn btn-outline-danger"><i class="fa fa-arrow-left"></i> Volver</a>
                                 <button type="submit" class="btn btn-success">{{ __('Save') }}</button>

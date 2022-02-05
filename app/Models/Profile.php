@@ -10,7 +10,7 @@ class Profile extends Model
     use HasFactory;
 
     protected $table = 'profiles';
-    protected $fillable = ['user_id', 'country_id', 'city_id', 'location_id', 'telephone', 'whatsapp'];
+    protected $fillable = ['gender'. 'country_id', 'city_id', 'location_id', 'telephone', 'whatsapp', 'instagram', 'telegram'];
 
     /**
      * The services that belong to the profile

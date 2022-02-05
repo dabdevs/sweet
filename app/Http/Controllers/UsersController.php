@@ -86,20 +86,29 @@ class UsersController extends Controller
     public function update(Request $request, $id)
     {
         $data = $request->validate([
+            'gender' => 'required|string',
             'country_id' => 'required|integer',
             'city_id' => 'required|integer',
             'location_id' => 'required|integer',
-            'telephone' => 'nullable|integer',
-            'services' => 'nullable|array'
+            'telephone' => 'nullable|string|min:6|max:12',
+            'services' => 'nullable|array',
+            'instagram' => 'nullable|string|min:10',
+            'telegram' => 'nullable|string|min:10',
+            'bio' => 'nullable|string|min:10'
         ]); 
+
+        // validate instagram link
+        // validate telegram link
         
-        $user = User::findOrFail($id); 
+        $user = User::findOrFail($id);  
 
         $data['whatsapp'] = $request->has('whatsapp') ? 1 : 0;
         
         $user->profile->fill($data);
-        $user->profile->services()->sync($data['services']);
-
+        
+        if($request->services)
+            $user->profile->services()->sync($data['services']);
+        
         $user->profile->save();
         
         return redirect()->back()->with('success', 'User updated successfully!');

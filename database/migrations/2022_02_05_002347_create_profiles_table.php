@@ -17,6 +17,7 @@ class CreateProfilesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id')->unique();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->string('gender')->nullable();
             $table->unsignedBigInteger('country_id')->nullable();
             $table->foreign('country_id')->references('id')->on('countries');
             $table->unsignedBigInteger('city_id')->nullable();
@@ -24,10 +25,12 @@ class CreateProfilesTable extends Migration
             $table->unsignedBigInteger('location_id')->nullable();
             $table->foreign('location_id')->references('id')->on('locations');
             $table->text('bio')->nullable();
-            $table->integer('telephone')->nullable();
+            $table->string('telephone')->nullable();
             $table->boolean('whatsapp')->default(0);
             $table->boolean('is_verified')->default(0);
+            $table->string('instagram')->nullable();
             $table->string('telegram')->nullable();
+            $table->boolean('on_vacation')->default(0);
             $table->timestamps();
         });
     }

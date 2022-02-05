@@ -38,5 +38,11 @@
     "Location": "Barrio",
     "Telephone": "Teléfono",
     "I have whatsapp": "Tengo whatsapp",
-    "Services": "Servicios"
+    "Services": "Servicios",
+    "Gender": "Género",
+    "Male": "Hombre",
+    "Female": "Mujer",
+    "Transgender": "Trans",
+    "Other": "Otro"
+
     }
