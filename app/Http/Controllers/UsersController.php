@@ -87,7 +87,7 @@ class UsersController extends Controller
             'city_id' => 'required|integer',
             'location_id' => 'required|integer',
             'telephone' => 'nullable|integer',
-        ]);
+        ]); 
         
         User::findOrFail($id);
 
@@ -101,7 +101,7 @@ class UsersController extends Controller
 
         $profile->fill($data);
         $profile->save();
-
+        
         return redirect()->back()->with('success', 'User updated successfully!');
     }
 
