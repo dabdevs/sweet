@@ -50,4 +50,21 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasOne(Profile::class);
     }
+
+    /**
+     * Create a profile for the User
+     *
+     */
+    public function createProfile()
+    {
+        $profile = Profile::where('user_id', $this->id)->first(); 
+        if($profile == null) {
+            $profile = new Profile();
+            $profile->user_id = $this->id;
+        }
+        
+        $profile->save(); 
+
+        return $profile;
+    }
 }

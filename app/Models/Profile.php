@@ -11,4 +11,13 @@ class Profile extends Model
 
     protected $table = 'profiles';
     protected $fillable = ['user_id', 'country_id', 'city_id', 'location_id', 'telephone', 'whatsapp', 'services'];
+
+    /**
+     * The services that belong to the profile
+     *
+     */
+    public function services()
+    {
+        return $this->belongsToMany(Service::class, 'profile_service', 'service_id', 'profile_id')->withTimeStamps();
+    }
 }

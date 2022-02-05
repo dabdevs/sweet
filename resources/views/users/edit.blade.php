@@ -16,8 +16,7 @@
 
                             <div class="col-md-4">
                                 <label for="country" class="form-label">{{ __('Country') }}</label>
-                                <select name="country_id" id="country" class="form-control select2" onchange="getCities()">
-                                    <option value="">Selecciona una opción</option>
+                                <select readonly name="country_id" id="country" class="form-control select2" onchange="getCities()">
                                     @foreach ($data['countries'] as $country)
                                         <option value="{{ $country->id }}" @if ($country->id == $user->profile->country_id) selected @endif>{{ $country->name }}
                                         </option>
@@ -47,18 +46,28 @@
                             <div class="col-md-6">
                                 <label for="telephone" class="form-label">{{ __('Telephone') }}</label>
                                 <input name="telephone" type="number" class="form-control" id="telephone"
-                                    value="{{ $user->profile->telephone ?? '' }}">
+                                    value="{{ $user->profile->telephone ?? '' }}" min="1">
                             </div>
                             <div class="col-md-6">
                                 <div class="form-check">
                                     <input name="whatsapp" class="form-check-input" type="checkbox" id="whatsapp"
                                         @if ($user->profile != null) {{ $user->profile->whatsapp ? 'checked' : '' }} @endif>
                                     <label class="form-check-label" for="whatsapp">
-                                        Tengo whatsapp
+                                        {{ __('I have whatsapp') }}
                                     </label>
                                 </div>
                             </div>
+                            <div class="col-md-4">
+                                <label for="service" class="form-label">{{ __('Service') }}</label>
+                                <select name="services[]" id="services" class="form-control" multiple>
+                                    @foreach ($data['services'] as $service)
+                                        <option value="{{ $service->id }}" @if ($service->id == $user->profile->service_id) selected @endif>
+                                            {{ $service->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                             <div class="col-12">
+                                <a href="{{ route('home') }}" class="btn btn-secondary"><i class="fa fa-arrow-left"></i> Volver</a>
                                 <button type="submit" class="btn btn-primary">{{ __('Save') }}</button>
                             </div>
                             {{ Form::close() }}
@@ -74,7 +83,11 @@
     <script>
         function getCities() {
             let countryId = $('#country').val();
-            if (countryId == '') return;
+            
+            if (countryId == '') {
+                $('#city').empty()
+                return;
+            }
 
             let $select = $('#city').empty()
             let $selectLocation = $('#location').empty()
@@ -84,6 +97,7 @@
                     countryId),
                 success: function(response) {
                     if (response.length > 0) {
+                        $select.append($('<option value="">Selecciona una opción</option>'))
                         for (var key in response) {
                             $select.append($('<option value="' + response[key].id + '">' + response[key].name +
                                 '</option>'))
@@ -103,7 +117,11 @@
 
         function getLocations() {
             let cityId = $('#city').val();
-            if (cityId == '') return;
+          
+            if (cityId == '') {
+                $('#location').empty()
+                return;
+            }
 
             let $select = $('#location').empty()
 
@@ -112,11 +130,11 @@
                 success: function(response) {
                     $select = $('#location').empty()
                     if (response.length > 0) {
+                        $select.append($('<option value="">Selecciona una opción</option>'))
                         for (var key in response) {
                             $select.append($('<option value="' + response[key].id + '">' + response[key].name +
                                 '</option>'))
                         }
-
                         $select.prop('disabled', false)
                     } else {
                         $select.prop('disabled', true)
