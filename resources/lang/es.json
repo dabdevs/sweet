@@ -35,7 +35,7 @@
     "Country": "País",
     "City": "Ciudad",
     "Save": "Guardar",
-    "Location": "Barrio",
+    "Location": "Zona",
     "Telephone": "Teléfono",
     "I have whatsapp": "Tengo whatsapp",
     "Services": "Servicios",
@@ -43,6 +43,6 @@
     "Male": "Hombre",
     "Female": "Mujer",
     "Transgender": "Trans",
-    "Other": "Otro"
-
+    "Other": "Otro",
+    "Visit": "Visitar"
     }

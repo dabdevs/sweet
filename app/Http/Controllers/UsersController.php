@@ -19,9 +19,18 @@ class UsersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $users = $this->getList($request); 
+        $data['countries']  =    Country::orderBy('name')->get();
+        $data['cities']     =    City::orderBy('name')->get();
+        $data['locations']  =    Location::orderBy('name')->get();
+        $data['services']   =    Service::orderBy('name')->get();
+
+        return view('users.index', [
+            'users' => $users->paginate(2),
+            'data' => $data
+        ]);
     }
 
     /**
@@ -127,5 +136,32 @@ class UsersController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function getList($request)
+    {
+        //$user = User::with('profile')->orderBy('name');
+        
+        $users = User::whereHas('profile', function($q){
+                    $q->where('user_id', '<>', null);
+                }); 
+        
+        if($request->name) {
+            $users->where('name', 'LIKE', '%'.$request->name.'%');
+        }
+
+        if($request->city_id) {
+            $users->whereHas('profile', function($q) use ($request){
+                $q->where('city_id', $request->city_id);
+            }); 
+        }
+        
+        if($request->location_id) {
+            $users->whereHas('profile', function($q) use ($request){
+                $q->where('location_id', $request->location_id);
+            }); 
+        }
+        
+        return $users;
     }
 }

@@ -20,4 +20,22 @@ class Profile extends Model
     {
         return $this->belongsToMany(Service::class, 'profile_service', 'profile_id', 'service_id')->withTimeStamps();
     }
+
+    /**
+     * The country that belong to the Profile
+     *
+     */
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
+    }
+
+    /**
+     * The city that belong to the Profile
+     *
+     */
+    public function city()
+    {
+        return $this->belongsTo(City::class);
+    }
 }
