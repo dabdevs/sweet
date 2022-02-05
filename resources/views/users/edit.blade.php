@@ -15,18 +15,18 @@
                             {{ Form::open() }}
 
                             <div class="col-md-2">
-                                <label for="gender" class="form-label">{{ __('Gender') }} {{ $user->profile->gender }}</label>
+                                <label for="gender" class="form-label">{{ __('Gender') }}</label>
                                 <select name="gender" id="gender" class="form-control">
-                                    <option value="Female" @if($user->profile->gender == __('Female')) selected @endif>{{ __('Female') }}</option>
-                                    <option value="Male">{{ __('Male') }}</option>
-                                    <option value="Transgender">{{ __('Transgender') }}</option>
-                                    <option value="Other">{{ __('Other') }}</option>
+                                    <option value="Female" @if($user->profile->gender == 'Female') selected @endif>{{ __('Female') }}</option>
+                                    <option value="Male" @if($user->profile->gender == 'Male') selected @endif>{{ __('Male') }}</option>
+                                    <option value="Transgender" @if($user->profile->gender == 'Transgender') selected @endif>{{ __('Transgender') }}</option>
+                                    <option value="Other" @if($user->profile->gender == 'Other') selected @endif>{{ __('Other') }}</option>
                                 </select>
                             </div>
 
                             <div class="col-md-3">
                                 <label for="country" class="form-label">{{ __('Country') }}</label>
-                                <select readonly name="country_id" id="country" class="form-control select2" onchange="getCities()">
+                                <select disabled name="country_id" id="country" class="form-control select2" onchange="getCities()">
                                     @foreach ($data['countries'] as $country)
                                         <option value="{{ $country->id }}" @if ($country->id == $user->profile->country_id) selected @endif>{{ $country->name }}
                                         </option>
@@ -85,7 +85,7 @@
                             <div class="col-md-5">
                                 <label for="service" class="form-label">{{ __('Services') }}:</label> 
                                 @if($user->profile->services != null)
-                                <p class="m-0">
+                                <p class="my-1">
                                     @foreach ($user->profile->services as $service)
                                         <span class="badge bg-primary">{{ $service->name }}</span>
                                     @endforeach

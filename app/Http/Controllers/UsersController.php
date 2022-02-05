@@ -8,7 +8,9 @@ use App\Models\Location;
 use App\Models\Profile;
 use App\Models\Service;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UsersController extends Controller
 {
@@ -63,6 +65,10 @@ class UsersController extends Controller
     public function edit($id)
     {
         $user = User::findOrFail($id);
+        if($user != Auth::user()) {
+            abort(403, "Permission denied");
+        } 
+
         $user->createProfile();
 
         $data['countries']  =    Country::orderBy('name')->get();
@@ -86,8 +92,8 @@ class UsersController extends Controller
     public function update(Request $request, $id)
     {
         $data = $request->validate([
-            'gender' => 'required|string',
-            'country_id' => 'required|integer',
+            'gender' => 'nullable|string',
+            'country_id' => 'nullable|integer',
             'city_id' => 'required|integer',
             'location_id' => 'required|integer',
             'telephone' => 'nullable|string|min:6|max:12',
@@ -100,10 +106,8 @@ class UsersController extends Controller
         // validate instagram link
         // validate telegram link
         
-        $user = User::findOrFail($id);  
-
+        $user = User::findOrFail($id); 
         $data['whatsapp'] = $request->has('whatsapp') ? 1 : 0;
-        
         $user->profile->fill($data);
         
         if($request->services)
