@@ -18,3 +18,10 @@ mix.js('resources/js/app.js', 'public/js')
         'node_modules/@fortawesome/fontawesome-free/webfonts',
         'public/webfonts'
     );
+
+mix.scripts([
+    'public/js/jquery-3.6.min.js',
+    'public/js/select2.min.js',
+    'public/js/sweetalert2.min.js',
+    'resources/js/app.js'
+], 'public/js/scripts.js');

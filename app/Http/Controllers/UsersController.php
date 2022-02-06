@@ -21,14 +21,18 @@ class UsersController extends Controller
      */
     public function index(Request $request)
     {
-        $users = $this->getList($request); 
+        $users = $this->getList($request)->paginate(2);
         $data['countries']  =    Country::orderBy('name')->get();
         $data['cities']     =    City::orderBy('name')->get();
         $data['locations']  =    Location::orderBy('name')->get();
         $data['services']   =    Service::orderBy('name')->get();
 
+        if ($request->ajax()) {
+            return view('users.results', compact('users'));
+        }
+
         return view('users.index', [
-            'users' => $users->paginate(2),
+            'users' => $users,
             'data' => $data
         ]);
     }
@@ -140,8 +144,6 @@ class UsersController extends Controller
 
     public function getList($request)
     {
-        //$user = User::with('profile')->orderBy('name');
-        
         $users = User::whereHas('profile', function($q){
                     $q->where('user_id', '<>', null);
                 }); 
