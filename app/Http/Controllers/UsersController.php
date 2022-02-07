@@ -24,7 +24,6 @@ class UsersController extends Controller
         $users = $this->getList($request)->paginate(2);
         $data['countries']  =    Country::orderBy('name')->get();
         $data['cities']     =    City::orderBy('name')->get();
-        $data['locations']  =    Location::orderBy('name')->get();
         $data['services']   =    Service::orderBy('name')->get();
 
         if ($request->ajax()) {

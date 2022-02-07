@@ -17,46 +17,26 @@
 
 @section('js')
     <script>
-        $('.select2').select2();
+        $(document).ready(function() {
+            $('.select2').select2();
 
-        function submitForm() {
-            let url = "{{ route('index') }}";
-            let data = $('#userFilterForm').serializeArray();
             
-            $.ajax({
-                url: url,
-                type: "GET",
-                datatype : 'html',
-                data: data,
-                beforeSend: function() {
-                    Swal.fire('Buscando...')
-                    Swal.showLoading()
-                },
-                success: function (data) {
-                    $('#result').html(data);
-                    Swal.close();
-                },
-                error:function (response) {
-                    console.log(response)
-                    Swal.close();
-                }
-            });
-        }
 
-        $(document).on('click', '.pagination a', function(event){
-            event.preventDefault(); 
-            var page = $(this).attr('href').split('page=')[1];
-            fetch_data(page);
-        });
-            
-        function fetch_data(page) {
-            $.ajax({
-                url:"{{ route('index') }}?page="+page,
-                success:function(data){
-                    $('#result').html(data);
-                }
+            $(document).on('click', '.pagination a', function(event){
+                event.preventDefault(); 
+                var page = $(this).attr('href').split('page=')[1];
+                fetch_data(page);
             });
-        }
+                
+            function fetch_data(page) {
+                $.ajax({
+                    url:"{{ route('index') }}?page="+page,
+                    success:function(data){
+                        $('#result').html(data);
+                    }
+                });
+            }
+        })
     </script>
 @endsection
 

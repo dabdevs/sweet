@@ -84,6 +84,7 @@
         <script src="{{ asset('js/jquery-3.6.min.js') }}"></script>
         <script src="{{ asset('js/select2.min.js') }}"></script>
         <script src="{{ asset('js/sweetalert2.min.js') }}"></script>
+        <script src="{{ asset('js/custom.js') }}"></script>
     </div>
     @yield('js')
 </body>
