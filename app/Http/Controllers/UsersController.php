@@ -74,24 +74,24 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function profile()
     {
-        $user = User::findOrFail($id);
-        if($user != Auth::user()) {
-            abort(403, "Permission denied");
-        } 
+        try {
+            $user = \Auth::user();
+            $user->createProfile();
 
-        $user->createProfile();
+            $data['countries']  =    Country::where('code', 'AR')->orderBy('name')->get();
+            $data['cities']     =    City::where('country_id', 1)->orderBy('name')->get();
+            $data['services']   =    Service::orderBy('name')->get();
 
-        $data['countries']  =    Country::orderBy('name')->get();
-        $data['cities']     =    City::orderBy('name')->get();
-        $data['locations']  =    Location::orderBy('name')->get();
-        $data['services']   =    Service::orderBy('name')->get();
-
-        return view('users.edit', [
-            'user' => $user,
-            'data' => $data
-        ]);
+            return view('users.edit', [
+                'user' => $user,
+                'data' => $data
+            ]);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+        
     }
 
     /**
@@ -112,7 +112,8 @@ class UsersController extends Controller
             'services' => 'nullable|array',
             'instagram' => 'nullable|string|min:10',
             'telegram' => 'nullable|string|min:10',
-            'bio' => 'nullable|string|min:10'
+            'bio' => 'nullable|string|min:10',
+            'avatar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
         ]); 
 
         // validate instagram link
@@ -125,6 +126,9 @@ class UsersController extends Controller
         if($request->services)
             $user->profile->services()->sync($data['services']);
         
+        if ($request->avatar) {
+            $user->addMediaFromRequest('avatar')->toMediaCollection('avatars');
+        }
         $user->profile->save();
         
         return redirect()->back()->with('success', 'User updated successfully!');
@@ -144,7 +148,7 @@ class UsersController extends Controller
     public function getList($request)
     {
         $users = User::whereHas('profile', function($q){
-                    $q->where('user_id', '<>', null);
+                    $q->whereNotNull(['user_id', 'country_id', 'city_id', 'location_id']);
                 }); 
         
         if($request->name) {

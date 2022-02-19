@@ -12,9 +12,9 @@
                         @csrf
 
                         <div class="row mb-3">
-                            <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
 
                             <div class="col-md-6">
+                                <label for="name" class="col-form-label">{{ __('Name') }} <span class="text-danger">*</span></label>
                                 <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" placeholder="Escribi tu nombre de modelo" required autocomplete="name" autofocus>
 
                                 @error('name')
@@ -23,12 +23,9 @@
                                     </span>
                                 @enderror
                             </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
 
                             <div class="col-md-6">
+                                <label for="email" class="col-form-label">{{ __('Email Address') }} <span class="text-danger">*</span></label>
                                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
 
                                 @error('email')
@@ -40,12 +37,27 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
 
                             <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+                                <label for="gender" class="col-form-label">{{ __('Gender') }} <span class="text-danger">*</span></label>
+                                <select name="gender" class="form-control @error('name') is-invalid @enderror" id="gender" value="{{ old('gender') }}"  required autocomplete="gender" autofocus>
+                                    <option value="Female">{{ __('Woman') }}</option>
+                                    <option value="Male">{{ __('Man') }}</option>
+                                    <option value="Trans">{{ __('Trans') }}</option>
+                                    <option value="Other">{{ __('Otro') }}</option>
+                                </select>
 
-                                @error('password')
+                                @error('gender')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                            <div class="col-md-6">
+                                <label for="birthdate" class="col-form-label">{{ __('Birthdate') }} <span class="text-danger">*</span></label>
+                                <input id="birthdate" type="text" class="form-control @error('birthdate') is-invalid @enderror" name="birthdate" value="{{ old('birthdate') }}" required autocomplete="birthdate">
+
+                                @error('birthdate')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -54,15 +66,30 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-end">{{ __('Confirm Password') }}</label>
-
                             <div class="col-md-6">
+                                <label for="password" class="col-form-label">{{ __('Password') }} <span class="text-danger">*</span></label>
+                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+
+                                @error('password')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                            <div class="col-md-6">
+                                <label for="password-confirm" class="col-form-label">{{ __('Confirm Password') }} <span class="text-danger">*</span></label>
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                                @error('password_confirmation')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                             </div>
                         </div>
 
                         <div class="row mb-0">
-                            <div class="col-md-6 offset-md-4">
+                            <small>{{ __('Already registered?') }} <a href="{{ route('login') }}">{{ __('Login') }}</a></small>
+                            <div class="col-md-12">
                                 <button type="submit" class="btn btn-primary">
                                     {{ __('Register') }}
                                 </button>
@@ -75,3 +102,14 @@
     </div>
 </div>
 @endsection
+
+@section('js')
+    <script>
+        const elem = document.querySelector('#birthdate');
+        const datepicker = new Datepicker(elem, {
+            "language": "es",
+            "autohide": true
+        }); 
+    </script>
+@endsection
+

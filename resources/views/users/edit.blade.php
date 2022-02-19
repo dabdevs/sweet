@@ -1,4 +1,7 @@
 @extends('layouts.app')
+@section('css')
+    <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
+@endsection
 
 @section('content')
     <div class="container">
@@ -10,22 +13,26 @@
                     <div class="card-body">
                         @include('shared.alerts')
 
-                        <form class="row g-3" method="POST" action="{{ route('users.update', $user->id) }}">
+                        <form class="row g-3" method="POST" action="{{ route('users.update', $user->id) }}" enctype="multipart/form-data">
                             @csrf
                             {{ Form::open() }}
+                            <div class="col-sm-12">
+                                <img src="..." class="img-thumbnail" alt="..."> <br><br>
+                                <input type="file" name="avatar" id="avatar">
+                            </div>
 
                             <div class="col-md-2">
-                                <label for="gender" class="form-label">{{ __('Gender') }}</label>
-                                <select name="gender" id="gender" class="form-control">
-                                    <option value="Female" @if($user->profile->gender == 'Female') selected @endif>{{ __('Female') }}</option>
-                                    <option value="Male" @if($user->profile->gender == 'Male') selected @endif>{{ __('Male') }}</option>
-                                    <option value="Transgender" @if($user->profile->gender == 'Transgender') selected @endif>{{ __('Transgender') }}</option>
-                                    <option value="Other" @if($user->profile->gender == 'Other') selected @endif>{{ __('Other') }}</option>
+                                <label for="gender" class="form-label">{{ __('Gender') }} <span class="text-danger">*</span></label>
+                                <select name="gender" id="gender" class="form-control select2">
+                                    <option value="Female" @if($user->gender == 'Female') selected @endif>{{ __('Female') }}</option>
+                                    <option value="Male" @if($user->gender == 'Male') selected @endif>{{ __('Male') }}</option>
+                                    <option value="Transgender" @if($user->gender == 'Transgender') selected @endif>{{ __('Transgender') }}</option>
+                                    <option value="Other" @if($user->gender == 'Other') selected @endif>{{ __('Other') }}</option>
                                 </select>
                             </div>
 
                             <div class="col-md-3">
-                                <label for="country" class="form-label">{{ __('Country') }}</label>
+                                <label for="country" class="form-label">{{ __('Country') }} <span class="text-danger">*</span></label>
                                 <select disabled name="country_id" id="country" class="form-control select2" onchange="getCities()">
                                     @foreach ($data['countries'] as $country)
                                         <option value="{{ $country->id }}" @if ($country->id == $user->profile->country_id) selected @endif>{{ $country->name }}
@@ -34,9 +41,8 @@
                                 </select>
                             </div>
                             <div class="col-md-3">
-                                <label for="city" class="form-label">{{ __('City') }}</label>
+                                <label for="city" class="form-label">{{ __('City') }} <span class="text-danger">*</span></label>
                                 <select name="city_id" id="city" class="form-control select2" onchange="getLocations()">
-                                    <option value="">Selecciona una opción</option>
                                     @foreach ($data['cities'] as $city)
                                         <option value="{{ $city->id }}" @if ($city->id == $user->profile->city_id) selected @endif>{{ $city->name }}
                                         </option>
@@ -44,13 +50,9 @@
                                 </select>
                             </div>
                             <div class="col-md-4">
-                                <label for="location" class="form-label">{{ __('Location') }}</label>
+                                <label for="location" class="form-label">{{ __('Location') }} <span class="text-danger">*</span></label>
                                 <select name="location_id" id="location" class="form-control select2">
-                                    <option value="">Selecciona una opción</option>
-                                    @foreach ($data['locations'] as $location)
-                                        <option value="{{ $location->id }}" @if ($location->id == $user->profile->location_id) selected @endif>
-                                            {{ $location->name }}</option>
-                                    @endforeach
+                                    <option value="{{ $user->profile->location_id}}">{{ $user->profile->location ? $user->profile->location->name : '' }}</option>
                                 </select>
                             </div>
                             <div class="col-md-7">
@@ -102,7 +104,7 @@
                             
                             <div class="col-12">
                                 <a href="{{ route('home') }}" class="btn btn-outline-danger"><i class="fa fa-arrow-left"></i> Volver</a>
-                                <button type="submit" class="btn btn-success">{{ __('Save') }}</button>
+                                <button type="submit" class="btn btn-success"> <i class="fa fa-save"></i> {{ __('Save changes') }}</button>
                             </div>
                             {{ Form::close() }}
                         </form>
@@ -112,5 +114,32 @@
         </div>
     </div>
     @include('shared.combo-location')
+@endsection
+
+@section('js')
+    <!-- include jQuery library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+
+    <!-- include FilePond library -->
+    <script src="https://unpkg.com/filepond/dist/filepond.min.js"></script>
+
+    <!-- include FilePond plugins -->
+    <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.js"></script>
+
+    <!-- include FilePond jQuery adapter -->
+    <script src="https://unpkg.com/jquery-filepond/filepond.jquery.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('.select2').select2();
+        })
+
+        const input = document.querySelector('#avatar')
+        const pond = FilePond.create(input)
+
+        FilePond.setOption({
+            server: '/upload'
+        });
+    </script>
 @endsection
 

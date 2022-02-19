@@ -1,10 +1,10 @@
 @if ($errors->any())
     <div class="col-sm-12">
-        <div class="alert  alert-warning alert-dismissible fade show" role="alert">
+        <div class="alert  alert-danger alert-dismissible fade show" role="alert">
             @foreach ($errors->all() as $error)
-                <span><p>{{ $error }}</p></span>
+                <li>{{ $error }}</li>
             @endforeach
-        </div> 
+        </div>
     </div>
 @endif
 

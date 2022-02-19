@@ -147,10 +147,12 @@ return [
     */
 
     'attributes' => [
-        'country_id' => 'País',
-        'city_id' => 'Ciudad',
-        'location_id' => 'Barrio',
-        'telephone' => 'Teléfono'
+        'country_id' => 'país',
+        'city_id' => 'ciudad',
+        'location_id' => 'barrio',
+        'telephone' => 'teléfono',
+        'email' => 'correo electrónico',
+        'birthdate' => 'fecha de nacimiento'
     ],
 
 ];

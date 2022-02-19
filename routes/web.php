@@ -24,11 +24,12 @@ Route::get('/', [UsersController::class, 'index'])->name('index');
 Auth::routes(['verify' => true]);
 
 Route::group(['prefix'=>'users','as'=>'users.'], function(){
-    Route::get('/{id}/edit', [UsersController::class, 'edit'])->name('edit');
     Route::post('/{id}/update', [UsersController::class, 'update'])->name('update');
 });
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/perfil', [UsersController::class, 'profile'])->name('profile')->middleware('auth');
+
+Route::get('/inicio', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('/get-cities/{country_id}', [App\Http\Controllers\UtilsController::class, 'getCities'])->name('get-cities');
 Route::get('/get-locations/{city_id}', [App\Http\Controllers\UtilsController::class, 'getLocations'])->name('get-locations');

@@ -17,8 +17,6 @@ class CreateProfilesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id')->unique();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->date('birthdate')->nullable();
-            $table->string('gender')->index('gender')->nullable();
             $table->unsignedBigInteger('country_id')->nullable();
             $table->foreign('country_id')->references('id')->on('countries');
             $table->unsignedBigInteger('city_id')->nullable();
@@ -34,6 +32,7 @@ class CreateProfilesTable extends Migration
             $table->string('height')->nullable();
             $table->string('eyes_color')->nullable();
             $table->float('price')->nullable();
+            $table->string('avatar')->nullable()->default('default.jpg');
             $table->string('horario')->nullable();
             $table->boolean('on_vacation')->default(0);
             $table->timestamps();

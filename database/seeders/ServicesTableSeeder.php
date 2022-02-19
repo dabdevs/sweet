@@ -14,10 +14,10 @@ class ServicesTableSeeder extends Seeder
      */
     public function run()
     {
-        $this->insertService('Phone calls'); 
-        $this->insertService('Video calls'); 
-        $this->insertService('Nude selling');
-        $this->insertService('Hook ups'); 
+        $this->insertService('Service 1'); 
+        $this->insertService('Service 2'); 
+        $this->insertService('Service 3');
+        $this->insertService('Service 4'); 
     }
 
     private function insertService($name)

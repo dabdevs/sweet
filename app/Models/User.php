@@ -21,6 +21,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
+        'birthdate',
+        'gender'
     ];
 
     /**
@@ -40,6 +42,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'birthdate' => 'date:m/d/Y'
     ];
 
     /**
@@ -58,13 +61,15 @@ class User extends Authenticatable implements MustVerifyEmail
     public function createProfile()
     {
         $profile = Profile::where('user_id', $this->id)->first(); 
-        if($profile == null) {
-            $profile = new Profile();
-            $profile->user_id = $this->id;
-        }
-        
-        $profile->save(); 
-
-        return $profile;
+        try {
+            if($profile == null) {
+                $profile = new Profile();
+                $profile->user_id = $this->id;
+                $profile->save();
+                request()->session()->flash('success', 'Tu perfil fue creado correctamente!');
+            }
+        } catch (\Throwable $th) {
+            throw $th;
+        }  
     }
 }

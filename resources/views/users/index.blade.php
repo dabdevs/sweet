@@ -4,10 +4,10 @@
     <div class="container-fluid">
         <form id="userFilterForm">
             <div class="row">
-                <div class="col-lg-3">
+                <div class="col-sm-3 col-lg-2">
                     @include('users.filter')
                 </div>
-                <div class="col-lg-9 mt-2" id="result">
+                <div class="col-sm-9 col-lg-10 mt-2" id="result">
                     @include('users.results')
                 </div>
             </div>
@@ -19,8 +19,6 @@
     <script>
         $(document).ready(function() {
             $('.select2').select2();
-
-            
 
             $(document).on('click', '.pagination a', function(event){
                 event.preventDefault(); 

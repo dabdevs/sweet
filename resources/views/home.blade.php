@@ -15,13 +15,13 @@
                     @endif
 
                     <div class="card" style="width: 18rem;">
-                        <img src="..." class="card-img-top" alt="...">
+                        <img src="" class="card-img-top" alt="...">
                         <div class="card-body">
-                          <h5 class="card-title">Completa tu perfil</h5>
+                          <h5 class="card-title">{{ $user->profile == null ? 'Aun no tenes un perfil' : 'Completa tu perfil' }}</h5>
                           <p class="card-text">
-                              {{ Auth::user()->name }} {{ Auth::user()->profile == null ? '' : ', '.__(Auth::user()->profile->gender) }}
+                              {{ $user->name }} {{ $user->profile == null ? '' : ', '.__($user->profile->gender) }}
                           </p>
-                          <a href="{{ route('users.edit', Auth::id()) }}" class="btn btn-primary">Completar</a>
+                          <a href="{{ route('profile') }}" class="btn btn-success">{{ $user->profile == null ? 'Crear mi perfil' : 'Completar mi perfil' }}</a>
                         </div>
                       </div>
                 </div>

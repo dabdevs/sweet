@@ -10,7 +10,7 @@ class Profile extends Model
     use HasFactory;
 
     protected $table = 'profiles';
-    protected $fillable = ['gender', 'country_id', 'city_id', 'location_id', 'telephone', 'whatsapp', 'instagram', 'telegram'];
+    protected $fillable = ['country_id', 'city_id', 'location_id', 'telephone', 'whatsapp', 'instagram', 'telegram'];
 
     /**
      * The services that belong to the profile
@@ -37,5 +37,14 @@ class Profile extends Model
     public function city()
     {
         return $this->belongsTo(City::class);
+    }
+
+    /**
+     * The location that belong to the Profile
+     *
+     */
+    public function location()
+    {
+        return $this->belongsTo(Location::class);
     }
 }

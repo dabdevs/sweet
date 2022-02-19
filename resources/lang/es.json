@@ -5,8 +5,9 @@
     "Remember Me": "Recuérdame",
     "Login": "Acceder",
     "Forgot Your Password?": "¿Olvidaste tu contraseña?",
-    "Register": "Registro",
+    "Register": "Registrarme",
     "Name": "Nombre",
+    "Birthdate": "Fecha de Nacimiento",
     "Confirm Password": "Confirmar contraseña",
     "Reset Password": "Restablecer contraseña",
     "Reset Password Notification": "Aviso para restablecer contraseña",
@@ -42,8 +43,14 @@
     "Gender": "Género",
     "Male": "Hombre",
     "Female": "Mujer",
-    "Transgender": "Trans",
+    "Trans": "Trans",
     "Other": "Otro",
     "Visit": "Visitar",
-    "No results found.": "No hay resultados."
+    "No results found.": "No hay resultados.",
+    "Home": "Inicio",
+    "Save changes": "Guardar cambios",
+    "Already registered?": "¿Ya tienes una cuenta?",
+    "Email Address": "Correo electrónico",
+    "Man": "Hombre",
+    "Woman": "Mujer"
     }

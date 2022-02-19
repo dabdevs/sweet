@@ -15,15 +15,14 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        $this->insertUser('admin@sweet.com', 'Admin', 'admin'); 
-        $this->insertUser('dabdves@gmail.com', 'Alain', '1234');
-        $this->insertUser('lola@gmail.com', 'Lola', 'lola'); 
-        $this->insertUser('martinp@gmail.com', 'Martin', '1234'); 
-        $this->insertUser('veronica@gmail.com', 'Vero', '1234');
-        $this->insertUser('pampalu@gmail.com', 'Pampalu', '1234'); 
+        $this->insertUser('dabdevs@gmail.com', 'Alain', '1234', 'Male', '02/12/1998');
+        $this->insertUser('lola@gmail.com', 'Lola', 'lola', 'Female', '02/01/1995'); 
+        $this->insertUser('martin@gmail.com', 'Martin', '1234', 'Male', '22/04/2011'); 
+        $this->insertUser('veronica@gmail.com', 'Vero', '1234', 'Female', '10/09/1990');
+        $this->insertUser('pampalu@gmail.com', 'Pampalu', '1234', 'Female', '09/03/2000'); 
     }
 
-    private function insertUser($email, $name, $password)
+    private function insertUser($email, $name, $password, $gender, $birthdate)
     {
         $user = User::where('email', $email)->first();
         if($user == null) {
@@ -33,6 +32,8 @@ class UsersTableSeeder extends Seeder
         $user->email = $email; 
         $user->name = $name;
         $user->password = Hash::make($password);
+        $user->birthdate = \Carbon\Carbon::createFromFormat('d/m/Y', $birthdate);
+        $user->gender = $gender;
         $user->save();
     }
 }
