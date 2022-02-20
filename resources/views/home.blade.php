@@ -15,12 +15,12 @@
                     @endif
 
                     <div class="card" style="width: 18rem;">
-                        <img src="" class="card-img-top" alt="...">
                         <div class="card-body">
-                          <p class="card-text">
-                              {{ $user->name }}, {{ $user->gender }}
-                          </p>
-                          <a href="{{ route('show-profile') }}" class="btn btn-success"> <i class="fa fa-pencil"></i> Editar mi perfil</a>
+                            <img @if ($user->profile->file_id == 1) src="{{ asset('img/avatars/'.$user->profile->file->name) }}" @else src="{{ asset('storage/avatars/'.$user->profile->file->name) }}" @endif class="img-thumbnail rounded-circle" alt="foto de perfil" width="100px">
+                            <p class="card-text">
+                                {{ $user->name }}, {{ $user->gender }}
+                            </p>
+                            <a href="{{ route('show-profile') }}" class="btn btn-success"> <i class="fa fa-pencil"></i> Editar mi perfil</a>
                         </div>
                       </div>
                 </div>

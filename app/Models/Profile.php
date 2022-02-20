@@ -13,6 +13,13 @@ class Profile extends Model
     protected $fillable = ['country_id', 'city_id', 'location_id', 'telephone', 'whatsapp', 'instagram', 'telegram', 'file_id'];
 
     /**
+     * The attributes that should be cast.
+     *
+     */
+    protected $casts = [
+    ];
+
+    /**
      * The services that belong to the profile
      *
      */

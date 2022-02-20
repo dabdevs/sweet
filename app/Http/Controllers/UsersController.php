@@ -83,7 +83,7 @@ class UsersController extends Controller
             $data['cities']     =    City::where('country_id', 1)->orderBy('name')->get();
             $data['services']   =    Service::orderBy('name')->get();
 
-            return view('users.edit', [
+            return view('users.profile', [
                 'user' => $user,
                 'data' => $data
             ]);
@@ -112,7 +112,8 @@ class UsersController extends Controller
             'instagram' => 'nullable|string|min:10',
             'telegram' => 'nullable|string|min:10',
             'bio' => 'nullable|string|min:10',
-            'avatar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
+            'avatar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'birthdate' => ['required',  'date_format:d/m/Y', 'before_or_equal:'.\Carbon\Carbon::now()->subYears(18)->format('d/m/Y')],
         ]); 
 
         // validate instagram link
@@ -141,6 +142,8 @@ class UsersController extends Controller
         }
         
         $user = \Auth::user(); 
+        $user->gender = $request->gender;
+        $user->birthdate = \Carbon\Carbon::createFromFormat('d/m/Y', $request->birthdate);
         $data['whatsapp'] = $request->has('whatsapp') ? 1 : 0;
         
         
@@ -151,6 +154,7 @@ class UsersController extends Controller
         }
         
         $user->profile->save();
+        $user->save(); 
         
         return redirect()->back()->with('success', 'User updated successfully!');
     }

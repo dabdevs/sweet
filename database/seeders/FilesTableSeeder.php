@@ -13,6 +13,6 @@ class FilesTableSeeder extends Seeder
      */
     public function run()
     {
-        \DB::insert('insert into files (name, path) values (?, ?)', ['default.jpg', 'default.jpg']);
+        \DB::insert('insert into files (name) values (?)', ['default.jpg']);
     }
 }
