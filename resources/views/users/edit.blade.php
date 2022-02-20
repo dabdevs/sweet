@@ -17,7 +17,7 @@
                             @csrf
                             {{ Form::open() }}
                             <div class="col-sm-12">
-                                <img src="{{ asset('storage/avatars/'.$user->profile->file->name) }}" class="img-thumbnail rounded-circle" alt="foto de perfil" width="100px"> <br><br>
+                                <img @if ($user->profile->file_id == 1) src="{{ asset('img/avatars/'.$user->profile->file->name) }}" @else src="{{ asset('storage/avatars/'.$user->profile->file->name) }}" @endif class="img-thumbnail rounded-circle" alt="foto de perfil" width="100px"> <br><br>
                                 <input type="file" name="avatar" id="avatar">
                             </div>
 

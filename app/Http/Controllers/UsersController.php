@@ -118,20 +118,26 @@ class UsersController extends Controller
         // validate instagram link
         // validate telegram link
         if ($request->hasFile('avatar')) {
+            if (\Auth::user()->profile->file_id > 1) {
+                if(\File::exists(storage_path('app/public/avatars/'.\Auth::user()->profile->file->name))){
+                    \File::delete(storage_path('app/public/avatars/'.\Auth::user()->profile->file->name));
+                }
+            } 
+
             $avatar = $request->file('avatar');
-            $filename = time().$avatar->getClientOriginalName();
+            $filename = time(). '-' .\Auth::user()->name. '-'. $avatar->getClientOriginalName();
 
             Storage::disk('local')->putFileAs(
                 'public/avatars/',
                 $avatar,
                 $filename
             );
-
+            
             $file = new File; 
             $file->name = $filename;
             $file->path = 'jghjhjk';
             $file->save();
-            $data['file_id'] = $file->id;
+            $data['file_id'] = $file->id; 
         }
         
         $user = \Auth::user(); 
