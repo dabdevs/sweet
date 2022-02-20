@@ -4,13 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\City;
 use App\Models\Country;
-use App\Models\Location;
-use App\Models\Profile;
+use App\Models\File;
 use App\Models\Service;
 use App\Models\User;
-use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
 
 class UsersController extends Controller
 {
@@ -74,7 +73,7 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function profile()
+    public function showProfile()
     {
         try {
             $user = \Auth::user();
@@ -101,7 +100,7 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function updateProfile(Request $request)
     {
         $data = $request->validate([
             'gender' => 'nullable|string',
@@ -118,17 +117,33 @@ class UsersController extends Controller
 
         // validate instagram link
         // validate telegram link
-        
-        $user = User::findOrFail($id); 
-        $data['whatsapp'] = $request->has('whatsapp') ? 1 : 0;
-        $user->profile->fill($data);
-        
-        if($request->services)
-            $user->profile->services()->sync($data['services']);
-        
-        if ($request->avatar) {
-            $user->addMediaFromRequest('avatar')->toMediaCollection('avatars');
+        if ($request->hasFile('avatar')) {
+            $avatar = $request->file('avatar');
+            $filename = time().$avatar->getClientOriginalName();
+
+            Storage::disk('local')->putFileAs(
+                'public/avatars/',
+                $avatar,
+                $filename
+            );
+
+            $file = new File; 
+            $file->name = $filename;
+            $file->path = 'jghjhjk';
+            $file->save();
+            $data['file_id'] = $file->id;
         }
+        
+        $user = \Auth::user(); 
+        $data['whatsapp'] = $request->has('whatsapp') ? 1 : 0;
+        
+        
+        $user->profile->fill($data); 
+        
+        if ($request->services) {
+            $user->profile->services()->sync($data['services']);
+        }
+        
         $user->profile->save();
         
         return redirect()->back()->with('success', 'User updated successfully!');

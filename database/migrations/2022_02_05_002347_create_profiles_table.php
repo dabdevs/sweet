@@ -32,9 +32,10 @@ class CreateProfilesTable extends Migration
             $table->string('height')->nullable();
             $table->string('eyes_color')->nullable();
             $table->float('price')->nullable();
-            $table->string('avatar')->nullable()->default('default.jpg');
             $table->string('horario')->nullable();
             $table->boolean('on_vacation')->default(0);
+            $table->unsignedBigInteger('file_id');
+            $table->foreign('file_id')->references('id')->on('files')->onDelete('cascade')->nullable();
             $table->timestamps();
         });
     }

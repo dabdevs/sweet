@@ -8,7 +8,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable implements MustVerifyEmail
+
+class User extends Authenticatable implements MustVerifyEmail 
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -65,8 +66,8 @@ class User extends Authenticatable implements MustVerifyEmail
             if($profile == null) {
                 $profile = new Profile();
                 $profile->user_id = $this->id;
+                $profile->file_id = 1;
                 $profile->save();
-                request()->session()->flash('success', 'Tu perfil fue creado correctamente!');
             }
         } catch (\Throwable $th) {
             throw $th;

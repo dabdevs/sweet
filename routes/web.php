@@ -24,10 +24,11 @@ Route::get('/', [UsersController::class, 'index'])->name('index');
 Auth::routes(['verify' => true]);
 
 Route::group(['prefix'=>'users','as'=>'users.'], function(){
-    Route::post('/{id}/update', [UsersController::class, 'update'])->name('update');
+    
 });
 
-Route::get('/perfil', [UsersController::class, 'profile'])->name('profile')->middleware('auth');
+Route::get('/perfil', [UsersController::class, 'showProfile'])->name('show-profile')->middleware('auth');
+Route::post('/actualizar-perfil', [UsersController::class, 'updateProfile'])->name('update-profile')->middleware('auth');
 
 Route::get('/inicio', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 

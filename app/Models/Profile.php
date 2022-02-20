@@ -10,7 +10,7 @@ class Profile extends Model
     use HasFactory;
 
     protected $table = 'profiles';
-    protected $fillable = ['country_id', 'city_id', 'location_id', 'telephone', 'whatsapp', 'instagram', 'telegram'];
+    protected $fillable = ['country_id', 'city_id', 'location_id', 'telephone', 'whatsapp', 'instagram', 'telegram', 'file_id'];
 
     /**
      * The services that belong to the profile
@@ -46,5 +46,14 @@ class Profile extends Model
     public function location()
     {
         return $this->belongsTo(Location::class);
+    }
+
+    /**
+     * Get the file associated with the Profile
+     *
+     */
+    public function file()
+    {
+        return $this->belongsTo(File::class);
     }
 }

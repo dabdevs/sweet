@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             LocationsTableSeeder::class,
             UsersTableSeeder::class,
             ServicesTableSeeder::class,
+            FilesTableSeeder::class,
             ProfilesTableSeeder::class,
         ]);
     }

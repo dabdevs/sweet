@@ -13,11 +13,11 @@
                     <div class="card-body">
                         @include('shared.alerts')
 
-                        <form class="row g-3" method="POST" action="{{ route('users.update', $user->id) }}" enctype="multipart/form-data">
+                        <form class="row g-3" method="POST" action="{{ route('update-profile') }}" enctype="multipart/form-data">
                             @csrf
                             {{ Form::open() }}
                             <div class="col-sm-12">
-                                <img src="..." class="img-thumbnail" alt="..."> <br><br>
+                                <img src="{{ asset('storage/avatars/'.$user->profile->file->name) }}" class="img-thumbnail rounded-circle" alt="foto de perfil" width="100px"> <br><br>
                                 <input type="file" name="avatar" id="avatar">
                             </div>
 
