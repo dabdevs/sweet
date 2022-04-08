@@ -114,10 +114,11 @@ class UsersController extends Controller
             'services' => 'nullable|array',
             'instagram' => 'nullable|string|min:10',
             'facebook' => 'nullable|string|min:10',
-            'bio' => 'nullable|string|min:10',
+            'bio' => 'nullable|string|min:10|max:255',
+            'fee' => 'required|integer',
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'birthdate' => ['required', 'before_or_equal:'.\Carbon\Carbon::now()->subYears(18)->format('Y/m/d')],
-        ]); //dd($data);
+            'birthdate' => ['nullable', 'before_or_equal:'.\Carbon\Carbon::now()->subYears(18)->format('Y/m/d')],
+        ]); 
 
         $user = auth()->user();
 
@@ -147,6 +148,7 @@ class UsersController extends Controller
                 $file->size = $size;
                 $file->ext = $extension;
                 $file->save();
+                $data['file_id'] = $file->id;
                 
                 $request->file('avatar')->storeAs('public/avatars', $filename);
             }
@@ -155,8 +157,6 @@ class UsersController extends Controller
             
             
             $user->profile->fill($data); 
-            $user->profile->gender = $request->gender;
-            $user->profile->birthdate = $request->birthdate; 
             
             if ($request->services) {
                 $user->profile->services()->sync($data['services']);

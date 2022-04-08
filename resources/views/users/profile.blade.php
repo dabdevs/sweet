@@ -126,7 +126,7 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label for="service">{{ __('Services') }}:</label> 
+                                    <label for="service">{{ __('Services') }} <span class="text-danger">*</span></label> 
                                     @if($user->profile->services != null)
                                     <p class="my-1">
                                         @foreach ($user->profile->services as $service)
@@ -155,6 +155,16 @@
                                             </span>
                                         @enderror
                                     </div>
+                                    <div class="for-group col-6 mb-2">
+                                        <label for="fee">{{ __('Fee (per hour)') }} {{ __('in') }}  {{ $user->profile->country->currency }}</label>
+                                        <input name="fee" type="number" class="form-control @error('fee') is-invalid @enderror" id="fee"
+                                            value="{{ $user->profile->fee == null ? old('fee') : $user->profile->fee }}" min="1">
+                                        @error('fee')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
                                 </div>
                             </div>
 
@@ -164,12 +174,15 @@
                                     <h4>{{ __('Contact information') }}</h4>
                                 </div>
 
-                                <div class="col-md-12">
+                                <div class="col-md-6">
+                                    <label for="email">{{ __('Email') }}</label>
+                                    <input name="email" type="email" class="form-control" id="email"
+                                        value="{{ $user->email == null ? old('email') : $user->email }}">
+                                </div>
+                                <div class="col-md-6">
                                     <label for="telephone">{{ __('Telephone') }}</label>
                                     <input name="telephone" type="text" class="form-control" id="telephone"
                                         value="{{ $user->profile->telephone == null ? old('telephone') : $user->profile->telephone  }}" min="1">
-                                </div>
-                                <div class="col-md-12 mt-2">
                                     <div class="form-check">
                                         <input name="whatsapp" class="form-check-input" type="checkbox" id="whatsapp" {{ $user->profile->whatsapp ? 'checked' : '' }}>
                                         <label class="form-check-label" for="whatsapp">

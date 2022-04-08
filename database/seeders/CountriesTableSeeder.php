@@ -14,13 +14,13 @@ class CountriesTableSeeder extends Seeder
      */
     public function run()
     {
-        $this->insertCountry('Argentina', 'AR'); 
-        $this->insertCountry('Brazil', 'BR'); 
-        $this->insertCountry('Chile', 'CL'); 
-        $this->insertCountry('Uruguay', 'UR'); 
+        $this->insertCountry('Argentina', 'AR', 'ARS'); 
+        $this->insertCountry('Brazil', 'BR', 'BRL'); 
+        $this->insertCountry('Chile', 'CL', 'CLP'); 
+        $this->insertCountry('Uruguay', 'UR', 'UYU'); 
     }
 
-    private function insertCountry($name, $code)
+    private function insertCountry($name, $code, $currency)
     {
         $country = Country::where(['name' => $name, 'code' => $code])->first();
         if($country == null) {
@@ -29,6 +29,7 @@ class CountriesTableSeeder extends Seeder
 
         $country->name = $name;
         $country->code = $code;
+        $country->currency = $currency;
         $country->save();
     }
 }

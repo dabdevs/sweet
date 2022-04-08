@@ -62,5 +62,8 @@
     "Lastname" : "Apellidos",
     "Contact information" : "Datos de contacto",
     "Personal information" : "Datos profesionales",
-    "Professional information" : "Datos profesionales"
+    "Professional information" : "Datos profesionales",
+    "Fee (per hour)" : "Tarifa (por hora)",
+    "Insert your fee in your local currency" : "Ingresá tu tarifa en tu moneda local",
+    "in" : "en"
 }
