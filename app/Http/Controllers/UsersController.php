@@ -7,7 +7,9 @@ use App\Models\Country;
 use App\Models\File;
 use App\Models\Service;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class UsersController extends Controller
@@ -102,77 +104,74 @@ class UsersController extends Controller
     public function updateProfile(Request $request)
     {
         $data = $request->validate([
-            'gender' => 'nullable|string',
+            'firstname' => 'required|string|max:150',
+            'lastname' => 'required|string|max:150',
+            'gender' => 'required|string',
             'country_id' => 'nullable|integer',
             'city_id' => 'required|integer',
             'location_id' => 'required|integer',
             'telephone' => 'nullable|string|min:6|max:12',
             'services' => 'nullable|array',
             'instagram' => 'nullable|string|min:10',
-            'telegram' => 'nullable|string|min:10',
+            'facebook' => 'nullable|string|min:10',
             'bio' => 'nullable|string|min:10',
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'birthdate' => ['required', 'before_or_equal:'.\Carbon\Carbon::now()->subYears(18)->format('Y/m/d')],
-        ]); 
+        ]); //dd($data);
 
-        // validate instagram link
-        // validate telegram link
-        if ($request->hasFile('avatar')) {
-            if (\Auth::user()->profile->file_id > 1) {
-                if(\File::exists(storage_path('app/public/avatars/'.\Auth::user()->profile->file->name))){
-                    \File::delete(storage_path('app/public/avatars/'.\Auth::user()->profile->file->name));
+        $user = auth()->user();
+
+        try {
+            DB::beginTransaction();
+
+            if ($request->hasFile('avatar')) {
+                $extension = pathinfo($request->avatar->getClientOriginalName(), PATHINFO_EXTENSION);
+                $type = $request->avatar->getClientMimeType();
+                $size = $request->avatar->getSize();
+                $filename = time(). '-'.Str::uuid()->toString(). '-'. $extension; 
+    
+                // If the user is uploading an avatar for the first time
+                if ($user->profile->file_id == 1) {
+                    $file = new File();
+                } else {
+                    $file = $user->profile->file;
+                    // Deleting current avatar photo from the server
+                    if(\File::exists(storage_path('app/public/avatars/'.$file->name))){
+                        \File::delete(storage_path('app/public/avatars/'.$file->name));
+                    } 
                 }
-            } 
-
-            $extension = pathinfo($request->avatar->getClientOriginalName(), PATHINFO_EXTENSION);
-            $type = $request->avatar->getClientMimeType();
-            $size = $request->avatar->getSize();
-            $filename = time(). '-'.Str::uuid()->toString(). '-'. $extension; 
-            $request->file('avatar')->storeAs('public/avatars', $filename); 
-
-            $file = File::create([
-                'user_id' => auth()->id(),
-                'name' => $filename,
-                'type' => $type,
-                'size' => $size,
-                'ext' => $extension
-            ]);
-
-            $data['file_id'] = $file->id; 
-
-                /*
-            $avatar = $request->file('avatar');
-            $filename = time(). '-' .\Auth::user()->name. '-'. $avatar->getClientOriginalName();
-
-            Storage::disk('local')->putFileAs(
-                'public/avatars/',
-                $avatar,
-                $filename
-            );
+                
+                $file->user_id = $user->id;
+                $file->name = $filename;
+                $file->type = $type;
+                $file->size = $size;
+                $file->ext = $extension;
+                $file->save();
+                
+                $request->file('avatar')->storeAs('public/avatars', $filename);
+            }
             
-            $file = new File; 
-            $file->name = $filename;
-            $file->save();
-            $data['file_id'] = $file->id; 
-            */
+            $data['whatsapp'] = $request->has('whatsapp') ? 1 : 0;
+            
+            
+            $user->profile->fill($data); 
+            $user->profile->gender = $request->gender;
+            $user->profile->birthdate = $request->birthdate; 
+            
+            if ($request->services) {
+                $user->profile->services()->sync($data['services']);
+            }
+            
+            $user->profile->save();
+
+            DB::commit();
+            
+            return redirect()->back()->with('success', 'User updated successfully!');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
         }
         
-        $user = \Auth::user(); 
-        $data['whatsapp'] = $request->has('whatsapp') ? 1 : 0;
-        
-        
-        $user->profile->fill($data); 
-        $user->profile->gender = $request->gender;
-        $user->profile->birthdate = $request->birthdate;
-        
-        if ($request->services) {
-            $user->profile->services()->sync($data['services']);
-        }
-        
-        $user->profile->save();
-        $user->save(); 
-        
-        return redirect()->back()->with('success', 'User updated successfully!');
     }
 
     /**

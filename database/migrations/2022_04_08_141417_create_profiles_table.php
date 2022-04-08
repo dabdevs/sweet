@@ -17,6 +17,8 @@ class CreateProfilesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id')->unique();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->string('firstname', 150)->nullable();
+            $table->string('lastname', 150)->nullable();
             $table->enum('gender', ['Male', 'Female', 'Trans', 'Other'])->nullable();
             $table->date('birthdate')->nullable();
             $table->unsignedBigInteger('country_id')->nullable();
@@ -41,7 +43,6 @@ class CreateProfilesTable extends Migration
             $table->boolean('is_verified')->default(0);
             $table->boolean('can_travel')->default(0);
             $table->unsignedBigInteger('file_id')->nullable();
-            $table->string('avatar')->default();
             $table->foreign('file_id')->references('id')->on('files')->onDelete('cascade')->nullable();
             $table->timestamps();
         });

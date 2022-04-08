@@ -153,7 +153,9 @@ return [
         'location_id' => 'zona',
         'telephone' => 'teléfono',
         'email' => 'correo electrónico',
-        'birthdate' => 'fecha de nacimiento'
+        'birthdate' => 'fecha de nacimiento',
+        'firstname' => 'Nombres',
+        'lastname' => 'Apellidos'
     ],
 
 ];

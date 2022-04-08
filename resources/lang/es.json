@@ -57,5 +57,10 @@
     "Man": "Hombre",
     "Woman": "Mujer", 
     "Insert a valid youtube url": "Ingresá una url de youtube válida",
-    "Featured Video": "Video destacado"
+    "Featured Video": "Video destacado",
+    "Firstname" : "Nombres",
+    "Lastname" : "Apellidos",
+    "Contact information" : "Datos de contacto",
+    "Personal information" : "Datos profesionales",
+    "Professional information" : "Datos profesionales"
 }
