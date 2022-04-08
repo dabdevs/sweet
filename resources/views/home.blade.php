@@ -16,9 +16,11 @@
 
                     <div class="card" style="width: 18rem;">
                         <div class="card-body">
-                            <img @if ($user->profile->file_id == 1) src="{{ asset('img/avatars/'.$user->profile->file->name) }}" @else src="{{ asset('storage/avatars/'.$user->profile->file->name) }}" @endif class="img-thumbnail rounded-circle" alt="foto de perfil" width="100px">
+                            @if ($user->profile != null && $user->profile->file_id != null)
+                            <img @if ($user->profile && $user->profile->file_id == 1) src="{{ asset('img/avatars/'.$user->profile->file->name) }}" @else src="{{ asset('storage/avatars/'.$user->profile->file->name) }}" @endif class="img-thumbnail rounded-circle" alt="foto de perfil" width="100px">
+                            @endif
                             <p class="card-text">
-                                {{ $user->name }}, {{ $user->gender }}
+                                {{ $user->username }} {{ $user->profile->gender ? ','.__($user->profile->gender) : '' }}
                             </p>
                             <a href="{{ route('show-profile') }}" class="btn btn-success"> <i class="fa fa-pencil"></i> Editar mi perfil</a>
                         </div>

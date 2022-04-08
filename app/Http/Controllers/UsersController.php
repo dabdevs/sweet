@@ -8,8 +8,7 @@ use App\Models\File;
 use App\Models\Service;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Intervention\Image\Facades\Image;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class UsersController extends Controller
 {
@@ -113,7 +112,7 @@ class UsersController extends Controller
             'telegram' => 'nullable|string|min:10',
             'bio' => 'nullable|string|min:10',
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'birthdate' => ['required',  'date_format:d/m/Y', 'before_or_equal:'.\Carbon\Carbon::now()->subYears(18)->format('d/m/Y')],
+            'birthdate' => ['required', 'before_or_equal:'.\Carbon\Carbon::now()->subYears(18)->format('Y/m/d')],
         ]); 
 
         // validate instagram link
@@ -125,6 +124,23 @@ class UsersController extends Controller
                 }
             } 
 
+            $extension = pathinfo($request->avatar->getClientOriginalName(), PATHINFO_EXTENSION);
+            $type = $request->avatar->getClientMimeType();
+            $size = $request->avatar->getSize();
+            $filename = time(). '-'.Str::uuid()->toString(). '-'. $extension; 
+            $request->file('avatar')->storeAs('public/avatars', $filename); 
+
+            $file = File::create([
+                'user_id' => auth()->id(),
+                'name' => $filename,
+                'type' => $type,
+                'size' => $size,
+                'ext' => $extension
+            ]);
+
+            $data['file_id'] = $file->id; 
+
+                /*
             $avatar = $request->file('avatar');
             $filename = time(). '-' .\Auth::user()->name. '-'. $avatar->getClientOriginalName();
 
@@ -136,18 +152,18 @@ class UsersController extends Controller
             
             $file = new File; 
             $file->name = $filename;
-            $file->path = 'jghjhjk';
             $file->save();
             $data['file_id'] = $file->id; 
+            */
         }
         
         $user = \Auth::user(); 
-        $user->gender = $request->gender;
-        $user->birthdate = \Carbon\Carbon::createFromFormat('d/m/Y', $request->birthdate);
         $data['whatsapp'] = $request->has('whatsapp') ? 1 : 0;
         
         
         $user->profile->fill($data); 
+        $user->profile->gender = $request->gender;
+        $user->profile->birthdate = $request->birthdate;
         
         if ($request->services) {
             $user->profile->services()->sync($data['services']);

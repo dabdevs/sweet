@@ -22,7 +22,8 @@ return [
     'alpha_num'            => 'El campo :attribute solo puede contener letras y números.',
     'array'                => 'El campo :attribute debe ser un array.',
     'before'               => 'El campo :attribute debe ser una fecha anterior a :date.',
-    'before_or_equal'      => 'El campo :attribute debe ser una fecha anterior o igual a :date.',
+    //'before_or_equal'      => 'El campo :attribute debe ser una fecha anterior o igual a :date.',
+    'before_or_equal'      => 'Debés ser mayor de edad.',
     'between'              => [
         'numeric' => 'El campo :attribute debe ser un valor entre :min y :max.',
         'file'    => 'El archivo :attribute debe pesar entre :min y :max kilobytes.',
@@ -149,7 +150,7 @@ return [
     'attributes' => [
         'country_id' => 'país',
         'city_id' => 'ciudad',
-        'location_id' => 'barrio',
+        'location_id' => 'zona',
         'telephone' => 'teléfono',
         'email' => 'correo electrónico',
         'birthdate' => 'fecha de nacimiento'

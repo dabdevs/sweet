@@ -50,10 +50,9 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
+            'username' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'birthdate' => ['required',  'date_format:d/m/Y', 'before_or_equal:'.\Carbon\Carbon::now()->subYears(18)->format('d/m/Y')],
         ]);
     }
 
@@ -65,11 +64,14 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
-            'name' => $data['name'],
+        $user = User::create([
+            'username' => $data['username'],
             'email' => $data['email'],
-            'birthdate' => \Carbon\Carbon::createFromFormat('d/m/Y', $data['birthdate']),
             'password' => Hash::make($data['password']),
         ]);
+
+        $user->createProfile();
+
+        return $user;
     }
 }

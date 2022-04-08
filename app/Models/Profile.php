@@ -10,13 +10,14 @@ class Profile extends Model
     use HasFactory;
 
     protected $table = 'profiles';
-    protected $fillable = ['country_id', 'city_id', 'location_id', 'telephone', 'whatsapp', 'instagram', 'telegram', 'file_id'];
+    protected $fillable = ['gender', 'birthdate', 'country_id', 'city_id', 'location_id', 'telephone', 'whatsapp', 'instagram', 'telegram', 'file_id'];
 
     /**
      * The attributes that should be cast.
      *
      */
     protected $casts = [
+        'birthdate' => 'date:m/d/Y'
     ];
 
     /**

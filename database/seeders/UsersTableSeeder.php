@@ -30,10 +30,8 @@ class UsersTableSeeder extends Seeder
         }
 
         $user->email = $email; 
-        $user->name = $name;
+        $user->username = $name;
         $user->password = Hash::make($password);
-        $user->birthdate = \Carbon\Carbon::createFromFormat('d/m/Y', $birthdate);
-        $user->gender = $gender;
         $user->save();
     }
 }
