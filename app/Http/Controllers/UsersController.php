@@ -115,6 +115,7 @@ class UsersController extends Controller
             'instagram' => 'nullable|string|min:10',
             'facebook' => 'nullable|string|min:10',
             'bio' => 'nullable|string|min:10|max:255',
+            'services' => 'required',
             'fee' => 'required|integer',
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'birthdate' => ['nullable', 'before_or_equal:'.\Carbon\Carbon::now()->subYears(18)->format('Y/m/d')],

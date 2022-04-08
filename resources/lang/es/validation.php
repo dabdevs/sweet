@@ -148,14 +148,17 @@ return [
     */
 
     'attributes' => [
-        'country_id' => 'país',
-        'city_id' => 'ciudad',
-        'location_id' => 'zona',
-        'telephone' => 'teléfono',
-        'email' => 'correo electrónico',
-        'birthdate' => 'fecha de nacimiento',
+        'country_id' => 'País',
+        'city_id' => 'Ciudad',
+        'location_id' => 'Zona',
+        'telephone' => 'Teléfono',
+        'email' => 'Correo electrónico',
+        'birthdate' => 'Fecha de nacimiento',
         'firstname' => 'Nombres',
-        'lastname' => 'Apellidos'
+        'lastname' => 'Apellidos',
+        'fee' => 'Tarifa',
+        'gender' => 'Género',
+        'services[]' => 'Servicios'
     ],
 
 ];

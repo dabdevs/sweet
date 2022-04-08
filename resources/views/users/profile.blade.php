@@ -27,7 +27,7 @@
                                 </div>
                                 
                                 <div class="col-md-3">
-                                    <label for="firstname">{{ __('Firstname') }}</label>
+                                    <label for="firstname">{{ __('Firstname') }} <span class="text-danger">*</span></label>
                                     <input name="firstname" type="text" class="form-control @error('firstname') is-invalid @enderror" id="firstname" 
                                         value="{{ $user->profile->firstname == null ? old('firstname') : $user->profile->firstname }}">
                                     
@@ -38,7 +38,7 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-3">
-                                    <label for="lastname">{{ __('Lastname') }}</label>
+                                    <label for="lastname">{{ __('Lastname') }} <span class="text-danger">*</span></label>
                                     <input name="lastname" type="text" class="form-control @error('lastname') is-invalid @enderror" id="lastname"
                                         value="{{ $user->profile->lastname == null ? old('lastname') : $user->profile->lastname }}">
 
@@ -135,13 +135,18 @@
                                     </p>
                                     @endif
                                     
-                                    <select name="services[]" id="services" class="form-control mb-2" multiple>
+                                    <select name="services[]" id="services" class="form-control mb-2 @error('services[]') is-invalid @enderror" multiple>
                                         @foreach ($data['services'] as $service)
                                             <option value="{{ $service->id }}" @if($user->profile->services != null && in_array($service->id, $user->profile->services->toArray())) selected @endif>
                                                 {{ $service->name }}
                                             </option>
                                         @endforeach
                                     </select>
+                                    @error('services[]')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
                                 </div>
                                 
                                 <div class="col-sm-6">
@@ -175,7 +180,7 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label for="email">{{ __('Email') }}</label>
+                                    <label for="email">{{ __('Email Address') }}</label>
                                     <input name="email" type="email" class="form-control" id="email"
                                         value="{{ $user->email == null ? old('email') : $user->email }}">
                                 </div>
