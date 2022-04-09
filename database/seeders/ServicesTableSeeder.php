@@ -14,13 +14,17 @@ class ServicesTableSeeder extends Seeder
      */
     public function run()
     {
-        $this->insertService('Service 1'); 
-        $this->insertService('Service 2'); 
-        $this->insertService('Service 3');
-        $this->insertService('Service 4'); 
+        $this->insertService('Actors & Actresses'); 
+        $this->insertService('Comedians'); 
+        $this->insertService('Dancers');
+        $this->insertService('Djs & Producers');
+        $this->insertService('Magicians');
+        $this->insertService('Musician'); 
+        $this->insertService('Photographers'); 
+        $this->insertService('Videographers'); 
     }
 
-    private function insertService($name)
+    private function insertService($name, $parent_id = null)
     {
         $service = Service::where('name', $name)->first();
         if($service == null) {
@@ -28,6 +32,7 @@ class ServicesTableSeeder extends Seeder
         }
 
         $service->name = $name;
+        $service->parent_id = $parent_id;
         $service->save();
     }
 }

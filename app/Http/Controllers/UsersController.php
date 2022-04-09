@@ -6,6 +6,7 @@ use App\Models\City;
 use App\Models\Country;
 use App\Models\File;
 use App\Models\Service;
+use App\Models\Tag;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -83,6 +84,7 @@ class UsersController extends Controller
             $data['countries']  =    Country::where('code', 'AR')->orderBy('name')->get();
             $data['cities']     =    City::where('country_id', 1)->orderBy('name')->get();
             $data['services']   =    Service::orderBy('name')->get();
+            $data['tags']   =    Tag::orderBy('name')->get();
 
             return view('users.profile', [
                 'user' => $user,
@@ -111,12 +113,13 @@ class UsersController extends Controller
             'city_id' => 'required|integer',
             'location_id' => 'required|integer',
             'telephone' => 'nullable|string|min:6|max:12',
-            'services' => 'nullable|array',
+            'services' => 'required|array',
             'instagram' => 'nullable|string|min:10',
             'facebook' => 'nullable|string|min:10',
             'bio' => 'nullable|string|min:10|max:255',
             'services' => 'required',
             'fee' => 'required|integer',
+            'tags' => 'nullable|array',
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'birthdate' => ['nullable', 'before_or_equal:'.\Carbon\Carbon::now()->subYears(18)->format('Y/m/d')],
         ]); 
@@ -155,16 +158,18 @@ class UsersController extends Controller
             }
             
             $data['whatsapp'] = $request->has('whatsapp') ? 1 : 0;
-            
-            
+
             $user->profile->fill($data); 
             
             if ($request->services) {
                 $user->profile->services()->sync($data['services']);
             }
+
+            if ($request->tags) {
+                $user->profile->tags()->sync($data['tags']);
+            }
             
             $user->profile->save();
-
             DB::commit();
             
             return redirect()->back()->with('success', 'User updated successfully!');

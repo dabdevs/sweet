@@ -17,7 +17,7 @@ class Profile extends Model
      *
      */
     protected $casts = [
-        'birthdate' => 'date:d/m/Y'
+        'birthdate' => 'date:d/m/Y',
     ];
 
     /**
@@ -27,6 +27,15 @@ class Profile extends Model
     public function services()
     {
         return $this->belongsToMany(Service::class, 'profile_service', 'profile_id', 'service_id')->withTimeStamps();
+    }
+
+    /**
+     * The tags that belong to the profile
+     *
+     */
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class, 'profile_tag', 'profile_id', 'tag_id')->withTimeStamps();
     }
 
     /**

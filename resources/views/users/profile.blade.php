@@ -126,23 +126,31 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label for="service">{{ __('Services') }} <span class="text-danger">*</span></label> 
-                                    @if($user->profile->services != null)
-                                    <p class="my-1">
-                                        @foreach ($user->profile->services as $service)
-                                            <span class="badge bg-primary">{{ $service->name }}</span>
-                                        @endforeach
-                                    </p>
-                                    @endif
-
-                                    <select name="services[]" id="services" class="form-control mb-2 select2 @error('services[]') is-invalid @enderror" multiple="multiple">
+                                    <label for="service">{{ __('Services') }} <span class="text-danger">*</span></label>
+                                    <select name="services[]" id="services" class="form-control mb-2 select2 @error('services') is-invalid @enderror" multiple="multiple">
                                         @foreach ($data['services'] as $service)
-                                            <option value="{{ $service->id }}" @if(in_array($service->id, $user->profile->services->pluck('id')->toArray())) selected @endif>
+                                            <option value="{{ $service->id }}" @if($user->profile->services->count() > 0 && in_array($service->id, $user->profile->services->pluck('id')->toArray())) selected @endif>
                                                 {{ $service->name }}
                                             </option>
                                         @endforeach
                                     </select>
-                                    @error('services[]')
+                                    @error('services')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+
+                                    <div class="mb-2"></div>
+
+                                    <label for="tag">{{ __('tags') }}</label>
+                                    <select name="tags[]" id="tags" class="form-control mb-2 select2 @error('tags') is-invalid @enderror" multiple="multiple">
+                                        @foreach ($data['tags'] as $tag)
+                                            <option value="{{ $tag->id }}" @if($user->profile->tags != null && in_array($tag->id, $user->profile->tags->pluck('id')->toArray())) selected @endif>
+                                                {{ $tag->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    @error('tags')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -161,7 +169,7 @@
                                         @enderror
                                     </div>
                                     <div class="for-group col-6 mb-2">
-                                        <label for="fee">{{ __('Fee (per hour)') }} {{ __('in') }}  {{ $user->profile->country->currency }}</label>
+                                        <label for="fee">{{ __('Fee (per hour)') }} {{ __('in') }}  {{ $user->profile->country->currency }} <span class="text-danger">*</span></label>
                                         <input name="fee" type="number" class="form-control mb-2 @error('fee') is-invalid @enderror" id="fee"
                                             value="{{ $user->profile->fee == null ? old('fee') : $user->profile->fee }}" min="1">
                                         @error('fee')

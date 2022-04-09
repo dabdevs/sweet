@@ -158,7 +158,7 @@ return [
         'lastname' => 'Apellidos',
         'fee' => 'Tarifa',
         'gender' => 'Género',
-        'services[]' => 'Servicios'
+        'services' => 'Servicios'
     ],
 
 ];

@@ -47,6 +47,8 @@ class CreateProfilesTable extends Migration
             $table->boolean('can_travel')->default(0);
             $table->unsignedBigInteger('file_id')->nullable();
             $table->foreign('file_id')->references('id')->on('files')->onDelete('cascade')->nullable();
+            $table->unsignedBigInteger('tag_id')->nullable();
+            $table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade')->nullable();
             $table->timestamps();
         });
     }

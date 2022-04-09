@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             ServicesTableSeeder::class,
             FilesTableSeeder::class,
             ProfilesTableSeeder::class,
+            TagsTableSeeder::class,
         ]);
     }
 }
