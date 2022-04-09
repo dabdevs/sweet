@@ -42,7 +42,7 @@
     "Location": "Zona",
     "Telephone": "Teléfono",
     "I have whatsapp": "Tengo whatsapp",
-    "Services": "Servicios",
+    "Categories": "Categorías",
     "Gender": "Género",
     "Male": "Hombre",
     "Female": "Mujer",
@@ -61,9 +61,14 @@
     "Firstname" : "Nombres",
     "Lastname" : "Apellidos",
     "Contact information" : "Datos de contacto",
-    "Personal information" : "Datos profesionales",
+    "Personal information" : "Datos personales",
     "Professional information" : "Datos profesionales",
     "Fee (per hour)" : "Tarifa (por hora)",
     "Insert your fee in your local currency" : "Ingresá tu tarifa en tu moneda local",
-    "in" : "en"
+    "in" : "en",
+    "Nickname" : "Apodo",
+    "Profile picture" : "Foto de perfil",
+    "Your profile has been updated successfully!" : "Tu perfil fue actualizado correctamente!",
+    "Category" : "Categoría",
+    "Subcategories" : "Subcategorías"
 }

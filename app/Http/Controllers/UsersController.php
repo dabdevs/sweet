@@ -5,10 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\City;
 use App\Models\Country;
 use App\Models\File;
-use App\Models\Service;
-use App\Models\Tag;
-use App\Models\User;
-use Carbon\Carbon;
+use App\Models\Profile;
+use App\Models\Category;
+use App\Models\Subcategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -25,7 +24,7 @@ class UsersController extends Controller
         $users = $this->getList($request)->paginate(2);
         $data['countries']  =    Country::orderBy('name')->get();
         $data['cities']     =    City::orderBy('name')->get();
-        $data['services']   =    Service::orderBy('name')->get();
+        $data['categories']   =    Category::orderBy('name')->get();
 
         if ($request->ajax()) {
             return view('users.results', compact('users'));
@@ -83,8 +82,8 @@ class UsersController extends Controller
 
             $data['countries']  =    Country::where('code', 'AR')->orderBy('name')->get();
             $data['cities']     =    City::where('country_id', 1)->orderBy('name')->get();
-            $data['services']   =    Service::orderBy('name')->get();
-            $data['tags']   =    Tag::orderBy('name')->get();
+            $data['categories']   =    Category::orderBy('name')->get();
+            $data['subcategories']   =    Subcategory::orderBy('name')->get();
 
             return view('users.profile', [
                 'user' => $user,
@@ -108,22 +107,23 @@ class UsersController extends Controller
         $data = $request->validate([
             'firstname' => 'required|string|max:150',
             'lastname' => 'required|string|max:150',
+            'nickname' => 'required|string|max:150',
             'gender' => 'required|string',
             'country_id' => 'nullable|integer',
             'city_id' => 'required|integer',
             'location_id' => 'required|integer',
             'telephone' => 'nullable|string|min:6|max:12',
-            'services' => 'required|array',
             'instagram' => 'nullable|string|min:10',
             'facebook' => 'nullable|string|min:10',
             'bio' => 'nullable|string|min:10|max:255',
-            'services' => 'required',
+            'category_id' => 'required|integer',
             'fee' => 'required|integer',
-            'tags' => 'nullable|array',
+            'subcategories' => 'nullable|array',
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'birthdate' => ['nullable', 'before_or_equal:'.\Carbon\Carbon::now()->subYears(18)->format('Y/m/d')],
+            'featured_video' => 'nullable|string'
         ]); 
-
+        
         $user = auth()->user();
 
         try {
@@ -160,19 +160,17 @@ class UsersController extends Controller
             $data['whatsapp'] = $request->has('whatsapp') ? 1 : 0;
 
             $user->profile->fill($data); 
-            
-            if ($request->services) {
-                $user->profile->services()->sync($data['services']);
-            }
 
-            if ($request->tags) {
-                $user->profile->tags()->sync($data['tags']);
-            }
+            $user->profile->subcategories()->sync([]);
+            if ($request->subcategories) {
+                $user->profile->subcategories()->sync($data['subcategories']);
+            } 
             
+            $user->profile->showable = 1;
             $user->profile->save();
             DB::commit();
             
-            return redirect()->back()->with('success', 'User updated successfully!');
+            return redirect()->back()->with('success', 'Your profile has been updated successfully!');
         } catch (\Throwable $th) {
             DB::rollBack();
             throw $th;
@@ -193,9 +191,9 @@ class UsersController extends Controller
 
     public function getList($request)
     {
-        $users = User::whereHas('profile', function($q){
-                    $q->whereNotNull(['user_id', 'country_id', 'city_id', 'location_id']);
-                }); 
+        $users = Profile::with('user')
+                        ->whereNotNull(['user_id', 'country_id', 'city_id', 'location_id'])
+                        ->where('showable', 1); 
         
         if($request->name) {
             $users->where('name', 'LIKE', '%'.$request->name.'%');

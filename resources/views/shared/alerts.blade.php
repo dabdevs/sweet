@@ -2,7 +2,7 @@
     <div class="col-sm-12">
         <div class="alert  alert-danger alert-dismissible fade show" role="alert">
             @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
+                <li>{{ __($error) }}</li>
             @endforeach
         </div>
     </div>
@@ -11,7 +11,7 @@
 @if (session('success'))
     <div class="col-sm-12">
         <div class="alert  alert-success alert-dismissible fade show" role="alert">
-            {{ session('success') }}
+            {{ __(session('success')) }}
         </div>
     </div>
 @endif
@@ -19,7 +19,7 @@
 @if (session('error'))
     <div class="col-sm-12">
         <div class="alert  alert-danger alert-dismissible fade show" role="alert">
-            {{ session('error') }}
+            {{ __(session('error')) }}
         </div>
     </div>
 @endif

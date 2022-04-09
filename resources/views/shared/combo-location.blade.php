@@ -39,7 +39,7 @@
                 countryId),
             success: function(response) {
                 if (response.length > 0) {
-                    $select.append($('<option value="">Selecciona una opción</option>'))
+                    $select.append($('<option value="">Seleccioná una opción</option>'))
                     for (var key in response) {
                         $select.append($('<option value="' + response[key].id + '">' + response[key].name +
                             '</option>'))
@@ -64,7 +64,7 @@
             $('#location').empty()
             return;
         }
-        
+
         let $select = $('#location').empty()
 
         $.ajax({
@@ -72,10 +72,40 @@
             success: function(response) {
                 $select = $('#location').empty()
                 if (response.length > 0) {
-                    $select.append($('<option value="">Selecciona una opción</option>'))
+                    $select.append($('<option value="">Seleccioná una opción</option>'))
                     for (var key in response) {
                         $select.append($('<option value="' + response[key].id + '">' + response[key].name +
                             '</option>'))
+                    }
+                    $select.prop('disabled', false)
+                } else {
+                    $select.prop('disabled', true)
+                }
+            },
+            error: function() {
+                alert.log("Ha habido un error.");
+            }
+        });
+    }
+
+    function getSubcategories() {
+        let categoryId = $('#category').val(); 
+
+        if (categoryId == '') {
+            $('#subcategories').empty()
+            return;
+        }
+
+        let $select = $('#subcategories').empty()
+
+        $.ajax({
+            url: "{{ route('get-subcategories', ['category_id' => ':category_id']) }}".replace(':category_id', categoryId),
+            success: function(response) {
+                $select = $('#subcategories').empty()
+                if (response.length > 0) {
+                    $select.append($('<option value="">Seleccioná una opción</option>'))
+                    for (var key in response) {
+                        $select.append($('<option value="' + response[key].id + '">' + response[key].name +'</option>'))
                     }
                     $select.prop('disabled', false)
                 } else {

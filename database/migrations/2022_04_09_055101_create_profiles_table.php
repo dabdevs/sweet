@@ -19,6 +19,7 @@ class CreateProfilesTable extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('firstname', 150)->nullable();
             $table->string('lastname', 150)->nullable();
+            $table->string('nickname', 150)->nullable();
             $table->string('document_type', 50)->nullable();
             $table->string('document_number', 50)->nullable();
             $table->enum('gender', ['Male', 'Female', 'Trans', 'Other'])->nullable();
@@ -45,10 +46,12 @@ class CreateProfilesTable extends Migration
             $table->boolean('is_verified')->default(0);
             $table->boolean('is_available')->default(1);
             $table->boolean('can_travel')->default(0);
+            $table->boolean('is_suspended')->default(0);
+            $table->boolean('showable')->default(0);
             $table->unsignedBigInteger('file_id')->nullable();
             $table->foreign('file_id')->references('id')->on('files')->onDelete('cascade')->nullable();
-            $table->unsignedBigInteger('tag_id')->nullable();
-            $table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade')->nullable();
+            $table->bigInteger('category_id')->unsigned();
+            $table->foreign('category_id')->references('id')->on('categories');
             $table->timestamps();
         });
     }

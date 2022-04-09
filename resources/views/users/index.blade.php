@@ -8,7 +8,7 @@
                     @include('users.filter')
                 </div>
                 <div class="col-sm-9 col-lg-10 mt-2" id="result">
-                    @include('users.results')
+                    @include('users.card')
                 </div>
             </div>
         </form>

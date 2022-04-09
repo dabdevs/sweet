@@ -15,8 +15,14 @@
                             {{ Form::open() }}
                             <div class="row mb-3">
                                 <div class="col-sm-12">
-                                    <img @if ($user->profile->file_id == 1) src="{{ asset('img/avatars/'.$user->profile->file->name) }}" @else src="{{ asset('storage/avatars/'.$user->profile->file->name) }}" @endif class="img-thumbnail rounded-circle" alt="foto de perfil" width="100px"> <br><br>
-                                    <input type="file" name="avatar" id="avatar">
+                                    <img @if ($user->profile->file_id == 1) src="{{ asset('img/avatars/'.$user->profile->file->name) }}" @else src="{{ asset('storage/avatars/'.$user->profile->file->name) }}" @endif class="img-thumbnail rounded-circle" alt="foto de perfil" width="100px"> <br>
+                                    <label for="">{{ __('Profile picture') }} </label>
+                                    <input type="file" name="avatar" id="avatar" class="@error('avatar') is-invalid @enderror" value="{{ old('avatar') }}">
+                                    @error('avatar')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
                                 </div>
                             </div> 
 
@@ -25,8 +31,20 @@
                                     <br>
                                     <h4>{{ __('Personal information') }}</h4>
                                 </div>
+
+                                <div class="col-md-4">
+                                    <label for="nickname">{{ __('Nickname') }} <span class="text-danger">*</span></label>
+                                    <input name="nickname" type="text" class="form-control mb-2 @error('nickname') is-invalid @enderror" id="nickname" 
+                                        value="{{ $user->profile->nickname == null ? old('nickname') : $user->profile->nickname }}">
+                                    
+                                    @error('nickname')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
                                 
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <label for="firstname">{{ __('Firstname') }} <span class="text-danger">*</span></label>
                                     <input name="firstname" type="text" class="form-control mb-2 @error('firstname') is-invalid @enderror" id="firstname" 
                                         value="{{ $user->profile->firstname == null ? old('firstname') : $user->profile->firstname }}">
@@ -37,7 +55,8 @@
                                         </span>
                                     @enderror
                                 </div>
-                                <div class="col-md-3">
+                                
+                                <div class="col-md-4">
                                     <label for="lastname">{{ __('Lastname') }} <span class="text-danger">*</span></label>
                                     <input name="lastname" type="text" class="form-control mb-2 @error('lastname') is-invalid @enderror" id="lastname"
                                         value="{{ $user->profile->lastname == null ? old('lastname') : $user->profile->lastname }}">
@@ -48,7 +67,10 @@
                                         </span>
                                     @enderror
                                 </div>
-                                <div class="col-md-3">
+                            </div>
+
+                            <div class="row mb-2">
+                                <div class="col-md-4">
                                     <label for="gender">{{ __('Gender') }}<span class="text-danger">*</span></label>
                                     <select name="gender" id="gender" class="form-control mb-2 @error('gender') is-invalid @enderror">
                                         <option value="">{{ __('Select an option') }}</option>
@@ -64,7 +86,7 @@
                                     @enderror
                                 </div>
     
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <label for="birthdate">{{ __('Birthdate') }}<span class="text-danger">*</span></label>
                                     <input id="birthdate" type="date" class="form-control mb-2 @error('birthdate') is-invalid @enderror" name="birthdate" value="{!! date('Y-m-d', strtotime($user->profile->birthdate)) !!}">
 
@@ -126,15 +148,14 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label for="service">{{ __('Services') }} <span class="text-danger">*</span></label>
-                                    <select name="services[]" id="services" class="form-control mb-2 select2 @error('services') is-invalid @enderror" multiple="multiple">
-                                        @foreach ($data['services'] as $service)
-                                            <option value="{{ $service->id }}" @if($user->profile->services->count() > 0 && in_array($service->id, $user->profile->services->pluck('id')->toArray())) selected @endif>
-                                                {{ $service->name }}
-                                            </option>
+                                    <label for="category">{{ __('Category') }} <span class="text-danger">*</span></label>
+                                    <select name="category_id" id="category" class="form-control mb-2 select2 @error('category_id') is-invalid @enderror" onchange="getSubcategories()">
+                                        @foreach ($data['categories'] as $category)
+                                            <option value="{{ $category->id }}" @if($user->profile->category->id == $category->id) selected @endif>{{ $category->name }}</option>
                                         @endforeach
                                     </select>
-                                    @error('services')
+                                   
+                                    @error('category')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -142,19 +163,14 @@
 
                                     <div class="mb-2"></div>
 
-                                    <label for="tag">{{ __('tags') }}</label>
-                                    <select name="tags[]" id="tags" class="form-control mb-2 select2 @error('tags') is-invalid @enderror" multiple="multiple">
-                                        @foreach ($data['tags'] as $tag)
-                                            <option value="{{ $tag->id }}" @if($user->profile->tags != null && in_array($tag->id, $user->profile->tags->pluck('id')->toArray())) selected @endif>
-                                                {{ $tag->name }}
-                                            </option>
+                                    <label for="subcategories">{{ __('Subcategories') }}</label>
+                                    <select name="subcategories[]" id="subcategories" class="form-control mb-2 select2 @error('subcategories') is-invalid @enderror" multiple="multiple">
+                                        @foreach ($data['subcategories'] as $subcategory)
+                                            @if($subcategory->category_id == $user->profile->category_id)
+                                                <option value="{{ $subcategory->id }}" @if(in_array($subcategory->id, $user->profile->subcategories->pluck('id')->toArray())) selected @endif>{{ $subcategory->name }}</option>
+                                            @endif
                                         @endforeach
                                     </select>
-                                    @error('tags')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
                                 </div>
                                 
                                 <div class="col-sm-6">

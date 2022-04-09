@@ -19,10 +19,10 @@ class DatabaseSeeder extends Seeder
             CitiesTableSeeder::class,
             LocationsTableSeeder::class,
             UsersTableSeeder::class,
-            ServicesTableSeeder::class,
+            CategoryTableSeeder::class,
             FilesTableSeeder::class,
             ProfilesTableSeeder::class,
-            TagsTableSeeder::class,
+            SubcategoriesTableSeeder::class,
         ]);
     }
 }

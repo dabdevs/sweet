@@ -10,7 +10,7 @@ class Profile extends Model
     use HasFactory;
 
     protected $table = 'profiles';
-    protected $fillable = ['firstname', 'lastname', 'gender', 'birthdate', 'country_id', 'city_id', 'location_id', 'telephone', 'whatsapp', 'instagram', 'telegram', 'file_id', 'fee'];
+    protected $fillable = ['firstname', 'lastname', 'nickname', 'gender', 'birthdate', 'country_id', 'city_id', 'location_id', 'telephone', 'whatsapp', 'instagram', 'telegram', 'file_id', 'fee', 'category_id', 'featured_video', 'instagram', 'facebook'];
 
     /**
      * The attributes that should be cast.
@@ -21,21 +21,21 @@ class Profile extends Model
     ];
 
     /**
-     * The services that belong to the profile
+     * The categories that belong to the profile
      *
      */
-    public function services()
+    public function category()
     {
-        return $this->belongsToMany(Service::class, 'profile_service', 'profile_id', 'service_id')->withTimeStamps();
+        return $this->belongsTo(Category::class);
     }
 
     /**
-     * The tags that belong to the profile
+     * The subcategory that belong to the profile
      *
      */
-    public function tags()
+    public function subcategories()
     {
-        return $this->belongsToMany(Tag::class, 'profile_tag', 'profile_id', 'tag_id')->withTimeStamps();
+        return $this->belongsToMany(Subcategory::class, 'profile_subcategory', 'profile_id', 'subcategory_id')->withTimeStamps();
     }
 
     /**
@@ -72,5 +72,14 @@ class Profile extends Model
     public function file()
     {
         return $this->belongsTo(File::class);
+    }
+
+    /**
+     * Get the user that owns the Profile
+     *
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

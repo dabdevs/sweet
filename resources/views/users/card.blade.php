@@ -4,8 +4,8 @@
             <div class="card m-x-1" style="width: 18rem;">
                 <img src="..." class="card-img-top" alt="...">
                 <div class="card-body">
-                    <h5 class="card-title">{{ $user->name }}</h5>
-                    <p class="card-text"><i class="fa fa-location"></i></p>
+                    <h5 class="card-title">{{ $user->user->username }}, {{ __($user->gender)[0] }}</h5>
+                    <p class="card-text"><img src="{{ asset('img/icons/location-dot-solid.svg') }}" style="margin-bottom: 5px" width="10px" alt=""> {{ $user->city->name}}</p>
                     <p class="card-text"></p>
                     <a href="#" class="btn btn-primary">{{ __('Visit') }}</a>
                 </div>

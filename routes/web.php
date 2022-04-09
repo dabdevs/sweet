@@ -34,3 +34,4 @@ Route::get('/inicio', [App\Http\Controllers\HomeController::class, 'index'])->na
 
 Route::get('/get-cities/{country_id}', [App\Http\Controllers\UtilsController::class, 'getCities'])->name('get-cities');
 Route::get('/get-locations/{city_id}', [App\Http\Controllers\UtilsController::class, 'getLocations'])->name('get-locations');
+Route::get('/get-subcategories/{category_id}', [App\Http\Controllers\UtilsController::class, 'getSubcategories'])->name('get-subcategories');

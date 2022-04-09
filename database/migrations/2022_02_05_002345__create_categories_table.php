@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProfileTagTable extends Migration
+class CreateCategoriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,10 @@ class CreateProfileTagTable extends Migration
      */
     public function up()
     {
-        Schema::create('profile_tag', function (Blueprint $table) {
+        Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('profile_id')->unsigned();
-            $table->foreign('profile_id')->references('id')->on('profiles');
-
-            $table->bigInteger('tag_id')->unsigned();
-            $table->foreign('tag_id')->references('id')->on('tags');
+            $table->string('name')->unique();
+            $table->integer('parent_id')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +28,6 @@ class CreateProfileTagTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('profile_tag');
+        Schema::dropIfExists('categories');
     }
 }
