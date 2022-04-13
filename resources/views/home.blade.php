@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.back')
 
 @section('content')
 <div class="container">
@@ -20,7 +20,7 @@
                             <img @if ($user->profile && $user->profile->file_id == 1) src="{{ asset('img/avatars/'.$user->profile->file->name) }}" @else src="{{ asset('storage/avatars/'.$user->profile->file->name) }}" @endif class="img-thumbnail rounded-circle" alt="foto de perfil" width="100px">
                             @endif
                             <p class="card-text">
-                                {{ $user->username }} {{ $user->profile->gender ? ','.__($user->profile->gender) : '' }}
+                                {{ $user->username }}, {{ __($user->profile->gender)[0] }}
                             </p>
                             <a href="{{ route('show-profile') }}" class="btn btn-success"> <i class="fa fa-pencil"></i> Editar mi perfil</a>
                         </div>

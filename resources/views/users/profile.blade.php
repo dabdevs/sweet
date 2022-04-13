@@ -147,6 +147,17 @@
                                     <h4>{{ __('Professional information') }}</h4>
                                 </div>
 
+                                <div class="col-sm-12">
+                                    <label for="headline">{{ __('Headline') }} <span class="text-danger">*</span></label>
+                                    <input value="{{ $user->profile->headline == null ? old('headline') : $user->profile->headline }}" name="headline" type="text" id="headline" class="form-control mb-2 @error('headline') is-invalid @enderror" placeholder="{{ __('I am a Dj') }}">
+                                   
+                                    @error('headline')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+
                                 <div class="col-md-6">
                                     <label for="category">{{ __('Category') }} <span class="text-danger">*</span></label>
                                     <select name="category_id" id="category" class="form-control mb-2 select2 @error('category_id') is-invalid @enderror" onchange="getSubcategories()">

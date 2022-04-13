@@ -4,9 +4,13 @@
             <div class="card m-x-1" style="width: 18rem;">
                 <img src="..." class="card-img-top" alt="...">
                 <div class="card-body">
-                    <h5 class="card-title">{{ $user->user->username }}, {{ __($user->gender)[0] }}</h5>
-                    <p class="card-text"><img src="{{ asset('img/icons/location-dot-solid.svg') }}" style="margin-bottom: 5px" width="10px" alt=""> {{ $user->city->name}}</p>
-                    <p class="card-text"></p>
+                    <h5 class="card-title">{{ $user->nickname }}, {{ __($user->gender)[0] }}</h5>
+                    <h6 class="card-text">{{ $user->headline }}</h6>
+                    <span class="badge bg-primary">{{ $user->fee }} / hs</span>
+                    <p class="card-text">
+                        <img src="{{ asset('img/icons/location-dot-solid.svg') }}" style="margin-bottom: 5px" width="10px" alt=""> 
+                        {{ $user->city->name}}
+                    </p>
                     <a href="#" class="btn btn-primary">{{ __('Visit') }}</a>
                 </div>
             </div>

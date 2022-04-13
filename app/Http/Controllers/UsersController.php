@@ -11,6 +11,7 @@ use App\Models\Subcategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Image;
 
 class UsersController extends Controller
 {
@@ -27,7 +28,7 @@ class UsersController extends Controller
         $data['categories']   =    Category::orderBy('name')->get();
 
         if ($request->ajax()) {
-            return view('users.results', compact('users'));
+            return view('users.card', compact('users'));
         }
 
         return view('users.index', [
@@ -121,7 +122,8 @@ class UsersController extends Controller
             'subcategories' => 'nullable|array',
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'birthdate' => ['nullable', 'before_or_equal:'.\Carbon\Carbon::now()->subYears(18)->format('Y/m/d')],
-            'featured_video' => 'nullable|string'
+            'featured_video' => 'nullable|string',
+            'headline' => 'nullable|string|max:150'
         ]); 
         
         $user = auth()->user();
@@ -130,10 +132,20 @@ class UsersController extends Controller
             DB::beginTransaction();
 
             if ($request->hasFile('avatar')) {
-                $extension = pathinfo($request->avatar->getClientOriginalName(), PATHINFO_EXTENSION);
-                $type = $request->avatar->getClientMimeType();
-                $size = $request->avatar->getSize();
-                $filename = time(). '-'.Str::uuid()->toString(). '-'. $extension; 
+                $image = $request->file('avatar');
+                $extension = pathinfo($image->getClientOriginalName(), PATHINFO_EXTENSION);
+                $type = $image->getClientMimeType();
+                $size = $image->getSize();
+                $filename = time(). '-'.Str::uuid()->toString(). '-'. $extension;
+                $destinationPath = public_path('avatars'); 
+                $img = Image::make($image->path()); dd($img);
+                $img->resize(100, 100, function ($constraint) {
+                    $constraint->aspectRatio();
+                })->save($destinationPath.'/'.$filename);
+        
+                
+                //$image->move($destinationPath, $filename);
+                //$img->storeAs($destinationPath, $filename);
     
                 // If the user is uploading an avatar for the first time
                 if ($user->profile->file_id == 1) {
@@ -154,7 +166,7 @@ class UsersController extends Controller
                 $file->save();
                 $data['file_id'] = $file->id;
                 
-                $request->file('avatar')->storeAs('public/avatars', $filename);
+                
             }
             
             $data['whatsapp'] = $request->has('whatsapp') ? 1 : 0;
@@ -200,15 +212,11 @@ class UsersController extends Controller
         }
 
         if($request->city_id) {
-            $users->whereHas('profile', function($q) use ($request){
-                $q->where('city_id', $request->city_id);
-            }); 
+            $users->where('city_id', $request->city_id);
         }
-        
+
         if($request->location_id) {
-            $users->whereHas('profile', function($q) use ($request){
-                $q->where('location_id', $request->location_id);
-            }); 
+            $users->where('location_id', $request->location_id);
         }
         
         return $users;

@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UsersController;
+use App\Http\Controllers\WebController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,7 +14,7 @@ use App\Http\Controllers\UsersController;
 |
 */
 
-Route::get('/', [UsersController::class, 'index'])->name('index');
+Route::get('/', [WebController::class, 'index'])->name('index');
 
 
 
