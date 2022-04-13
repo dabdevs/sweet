@@ -2,11 +2,11 @@
     <div class="container">
         <div class="row">
             <div class="title add-animation animate">
-                <h5 class="text-gray">{{ __('Our') }}</h5>
-                <h2>Djs</h2>
+                <h2>{{ __('Our Team') }}</h2>
                 <div class="separator-container">
                     <div class="separator line-separator"><i class="fa fa-headphones" aria-hidden="true"></i>
                     </div>
+                    <p>Nuestro equipo está compuesto por profesionales...</p>
                 </div>
             </div>
         </div>

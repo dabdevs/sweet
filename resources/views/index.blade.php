@@ -1,7 +1,7 @@
 @extends('layouts.front')
 
 @section('content')
-    <div class="loading ">
+    <div class="loading">
         <div class="loading-container">
             <p>{{ __('Welcome to Djnius...') }}</p>
             <img class="loader" src="{{ asset('rubik/img/rubik.svg') }}" />
@@ -24,6 +24,5 @@
         @include('frontend/clients')
 
         @include('frontend/contact')
-         
     </div>
 @endsection

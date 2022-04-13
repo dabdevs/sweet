@@ -8,10 +8,11 @@
     <div class="container">
         <div class="text-area">
             <div class="title add-animation">
-                <h2>{{ __('Some of our clients') }}</h2>
+                <h2>{{ __('Clients') }}</h2>
                 <div class="separator-container">
                     <div class="separator line-separator"><i class="fa fa-headphones" aria-hidden="true"></i></div>
                 </div>
+                <p>Ellos creen en nosotros</p>
             </div>
         </div>
 

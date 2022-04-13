@@ -19,7 +19,7 @@
                                 CABA & GBA
                             </p>
                             <h4>{{ __('Phone') }}</h4>
-                            <p class="text-gray">0456 / 71 21 39</p>
+                            <p class="text-gray">0 11 800 0000</p>
                             <h4>{{ __('Envianos un correo') }}</h4>
                             <a href="mailto:info@djnius.com">
                                 <p class="text-gray">info@djnius.com</p>

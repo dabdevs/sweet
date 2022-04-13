@@ -39,7 +39,7 @@
                 </li>
                 <li>
                     <a href="" data-scroll="true" data-id="#team">
-                        {{ __('Team') }}
+                        {{ __('Our Team') }}
                     </a>
                 </li>
                 <li>
